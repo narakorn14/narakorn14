@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบเช็คชื่อเข้าเรียน</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- ไม่ต้องมี script Firebase SDK ที่นี่อีกต่อไป -->
 </head>
 <body>
     <header>
@@ -13,7 +14,7 @@
 
     <main>
         <section id="class-info">
-            <h2>ห้องเรียน: ม.1/1 - วิชา: คณิตศาสตร์</h2>
+            <h2>ห้องเรียน: <span id="class-name-display">ม.1/1 - วิชา: คณิตศาสตร์</span></h2>
             <p>วันที่: <span id="current-date"></span></p>
         </section>
 
@@ -39,6 +40,7 @@
         <p>© 2023 ครู Front-end ของคุณ</p>
     </footer>
 
-    <script src="js/main.js"></script>
+    <!-- main.js จะ import Firebase essentials จาก firebase-init.js -->
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
