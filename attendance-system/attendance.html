@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบเช็คชื่อเข้าเรียน</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>ระบบเช็คชื่อเข้าเรียน</h1>
+    </header>
+
+    <main>
+        <section id="class-info">
+            <h2>ห้องเรียน: ม.1/1 - วิชา: คณิตศาสตร์</h2>
+            <p>วันที่: <span id="current-date"></span></p>
+        </section>
+
+        <section id="attendance-table-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>สถานะ</th>
+                        <th>หมายเหตุ (ถ้ามี)</th>
+                    </tr>
+                </thead>
+                <tbody id="student-list-body">
+                    <!-- ข้อมูลนักเรียนจะถูกสร้างโดย JavaScript ที่นี่ -->
+                </tbody>
+            </table>
+            <button id="save-button">บันทึกการเช็คชื่อ</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2023 ครู Front-end ของคุณ</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
