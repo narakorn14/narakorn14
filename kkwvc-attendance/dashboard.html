@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แดชบอร์ด - ระบบเช็คชื่อนักเรียน</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- Specific styles for admin/teacher/report sections -->
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/teacher.css">
+    <link rel="stylesheet" href="css/report.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>ระบบเช็คชื่อนักเรียน KKWVC</h1>
+        <div class="user-info-controls">
+            <span id="userInfo">กำลังโหลด...</span>
+            <button id="logoutButton">ออกจากระบบ</button>
+        </div>
+    </header>
+
+    <nav class="dashboard-nav" id="dashboardNav">
+        <!-- Navigation items will be populated by JS based on role -->
+    </nav>
+
+    <main class="container" id="mainContent">
+        <p>กำลังโหลดแดชบอร์ด...</p>
+    </main>
+
+    <footer>
+        <p>© 2023 วิทยาลัยการอาชีพวังไกลกังวล</p>
+    </footer>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <!-- Student, Admin, Teacher, Report JS files -->
+    <script src="js/student-manager.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/teacher.js"></script>
+    <script src="js/attendance.js"></script>
+    <script src="js/report.js"></script>
+    <!-- Main app logic -->
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            App.init(); // Initialize app.js which initializes Auth.js
+                        // Auth.js onAuthStateChanged will then call App.loadDashboardContent()
+        });
+    </script>
+</body>
+</html>

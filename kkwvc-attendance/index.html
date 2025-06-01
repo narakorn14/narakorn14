@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบเช็คชื่อนักเรียน - วิทยาลัยการอาชีพวังไกลกังวล</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <!-- Add SDKs for Firebase products you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="login-container">
+        <img src="assets/logo.png" alt="KKWVC Logo" class="logo">
+        <h2>ระบบเช็คชื่อนักเรียน</h2>
+        <h3>วิทยาลัยการอาชีพวังไกลกังวล</h3>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">อีเมล:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">รหัสผ่าน:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">เข้าสู่ระบบ</button>
+            <p id="loginError" class="error-message"></p>
+        </form>
+    </div>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Initialize app after DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            App.init(); // Call init function from app.js
+        });
+    </script>
+</body>
+</html>

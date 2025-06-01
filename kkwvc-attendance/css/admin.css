@@ -1,0 +1,28 @@
+/* Styles for admin section */
+#addTeacherFormContainer, #addClassFormContainer {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
+#teachersList ul, #classesList ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+#teachersList li, #classesList li {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+#teachersList li:last-child, #classesList li:last-child {
+    border-bottom: none;
+}
+#teachersList button, #classesList button {
+    margin-left: 10px;
+    background-color: #dc3545;
+    font-size: 0.8em;
+    padding: 4px 8px;
+}
+#teachersList button:hover, #classesList button:hover {
+    background-color: #c82333;
+}

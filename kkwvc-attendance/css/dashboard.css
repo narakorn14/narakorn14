@@ -1,0 +1,78 @@
+body { /* Override general body style for dashboard */
+    display: block; /* Remove flex centering */
+    background-color: #e9ecef;
+}
+
+.dashboard-header {
+    background-color: #0056b3; /* KKWVC primary color */
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 1.5em;
+    color: white;
+}
+
+.user-info-controls {
+    display: flex;
+    align-items: center;
+}
+
+.user-info-controls #userInfo {
+    margin-right: 20px;
+}
+
+.dashboard-nav {
+    background-color: #f8f9fa;
+    padding: 10px 30px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.dashboard-nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.dashboard-nav li {
+    margin-right: 20px;
+}
+
+.dashboard-nav a, .dashboard-nav button.nav-button {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    padding: 8px 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1em;
+}
+.dashboard-nav a.active, .dashboard-nav button.nav-button.active {
+    color: #0056b3;
+    border-bottom: 2px solid #0056b3;
+}
+
+
+.container { /* For main content area */
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #343a40;
+    color: #f8f9fa;
+    font-size: 0.9em;
+}
