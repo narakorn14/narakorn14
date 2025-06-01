@@ -1,0 +1,9 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* คุณสามารถเพิ่ม custom global styles ที่นี่ได้ ถ้าจำเป็น */
+body {
+  font-family: 'Kanit', sans-serif; /* ตัวอย่างการใช้ฟอนต์ (ต้อง import ใน public/index.html) */
+}
