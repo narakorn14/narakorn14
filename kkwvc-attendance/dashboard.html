@@ -10,12 +10,15 @@
     <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="css/teacher.css">
     <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
 </head>
 <body class="dashboard-page">
+    
     <header class="dashboard-header">
         <h1>ระบบเช็คชื่อนักเรียน KKWVC</h1>
         <div class="user-info-controls">
@@ -23,8 +26,9 @@
             <button id="logoutButton">ออกจากระบบ</button>
         </div>
     </header>
-
+    
     <nav class="dashboard-nav" id="dashboardNav">
+        <button class="hamburger" id="hamburgerBtn" aria-label="เมนู">&#9776;</button>
         <!-- Navigation items will be populated by JS based on role -->
     </nav>
 
@@ -48,6 +52,7 @@
     <script src="js/report.js"></script>
     <!-- Main app logic -->
     <script src="js/app.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             App.init(); // Initialize app.js which initializes Auth.js

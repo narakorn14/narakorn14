@@ -37,16 +37,89 @@ body.login-page { /* ใช้ class เฉพาะสำหรับ body ข�
 /* ปุ่มใน login ควรใช้ class .btn .btn-primary และ width: 100% */
 /* ใน HTML: <button type="submit" class="btn btn-primary" style="width:100%;">เข้าสู่ระบบ</button> */
 
-/* ถ้ายังไม่ได้แก้ HTML: */
-.login-container form button[type="submit"] {
-    width: 100%; /* ทำให้ปุ่มเต็มความกว้าง */
-    margin-top: 0.5rem; /* เพิ่มระยะห่างด้านบนเล็กน้อย */
-    /* สไตล์จะมาจาก .btn-primary ถ้าใส่ class */
-    /* ถ้าไม่ใส่ class: */
-    background-color: var(--primary-color);
-    color: var(--bg-light-color);
-    padding: 0.6rem 1rem; /* ปรับ padding */
+body.login-page {
+    background-color: #f0f2f5; /* สีพื้นหลังอ่อนๆ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
 }
-.login-container form button[type="submit"]:hover {
-    background-color: var(--primary-color-darker);
+
+.login-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.login-container h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.login-container h3 {
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 0.6rem 1.25rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: red;
+    margin-top: 1rem;
+    font-size: 0.9rem;
 }

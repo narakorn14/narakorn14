@@ -50,7 +50,7 @@
 #attendanceStudentList .status-select {
     /* สไตล์จะมาจาก Global .form-group select */
     padding: 0.375rem 0.5rem; /* อาจจะปรับให้เล็กลงหน่อย */
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 button#submitAttendanceBtn {

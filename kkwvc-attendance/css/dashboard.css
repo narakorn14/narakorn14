@@ -4,6 +4,19 @@ body.dashboard-page { /* ใช้ class เฉพาะสำหรับ body 
     background-color: var(--bg-color); /* ใช้ var */
 }
 
+body.dashboard-page, /* หรือ body ถ้าต้องการให้มีผลกับทุกหน้า */
+body.login-page { /* ถ้าหน้า login มี footer และต้องการให้ติดล่าง */
+    display: flex;
+    flex-direction: column; /* ให้เรียงจากบนลงล่าง */
+    min-height: 100vh;    /* ให้ body สูงเต็มหน้าจอเสมอ */
+}
+
+/* ทำให้ main content ยืดเพื่อดัน footer ลงไป */
+main.container, /* หรือ selector ของ main content area ของคุณ */
+div.login-container { /* ถ้าหน้า login มีโครงสร้างที่ main content คือ login-container */
+    flex-grow: 1; /* หรือ flex: 1; */
+}
+
 .dashboard-header {
     background-color: var(--primary-color); /* ใช้ var */
     color: var(--bg-light-color); /* ใช้ var */
@@ -33,7 +46,7 @@ body.dashboard-page { /* ใช้ class เฉพาะสำหรับ body 
 .user-info-controls #logoutButton { /* ทำให้ปุ่ม logout ดูเหมือนปุ่มรอง */
     /* ใช้ class .btn .btn-secondary หรือ .btn-light ถ้ามี */
     /* ถ้าไม่ใช้ class ก็ style ที่นี่: */
-    background-color: transparent;
+    background-color: #dc3545;
     color: var(--bg-light-color);
     border: 1px solid var(--bg-light-color);
     padding: 0.375rem 0.75rem; /* ปรับ padding */
@@ -47,7 +60,8 @@ body.dashboard-page { /* ใช้ class เฉพาะสำหรับ body 
     background-color: var(--bg-light-color); /* ใช้ var */
     padding: 0.75rem 1.5rem; /* ปรับ padding */
     border-bottom: 1px solid var(--border-color); /* ใช้ var */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    /*box-shadow: 0 1px 3px rgba(0,0,0,0.05);*/
+    position: relative;
 }
 
 .dashboard-nav ul {
@@ -56,10 +70,6 @@ body.dashboard-page { /* ใช้ class เฉพาะสำหรับ body 
     margin: 0;
     display: flex;
     gap: 1rem; /* ใช้ gap แทน margin-right */
-}
-
-.dashboard-nav li {
-    /* margin-right: 20px; (ลบออก เพราะใช้ gap ใน ul) */
 }
 
 .dashboard-nav a, .dashboard-nav button.nav-button {
@@ -96,6 +106,64 @@ body.dashboard-page { /* ใช้ class เฉพาะสำหรับ body 
     box-shadow: var(--box-shadow); /* ใช้ var */
 }
 
+/*////////////////////////////////////////////////////////*/
+.hamburger {
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color); /* ใช้สีหลักของคุณ เช่น #0056b3 */
+    font-size: 1.6rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    display: none; /* จะเปิดใช้บนมือถือผ่าน media query */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hamburger:hover {
+    background-color: rgba(0, 86, 179, 0.1); /* สีพื้นหลังอ่อนตอน hover */
+    color: var(--primary-color);
+}
+
+.hamburger i {
+    pointer-events: none; /* ทำให้ไอคอนไม่ขัดขวางคลิกปุ่ม */
+}
+
+
+.nav-menu {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-button {
+    background-color: transparent;
+    color: var(--text-light-color);
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+    background-color: #f8f9fa;
+}
+
+.nav-button:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: var(--primary-color);
+}
+
+.nav-button.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
+}
+/*////////////////////////////////////////////////////////*/
+
 footer {
     text-align: center;
     margin-top: 2rem; /* ใช้ rem */
@@ -104,3 +172,102 @@ footer {
     color: #f8f9fa;
     font-size: 0.9rem; /* ใช้ rem */
 }
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+        text-align: left;
+    }
+
+    .dashboard-nav ul {
+        display: none;
+    }
+
+    .dashboard-header h1 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .user-info-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .user-info-controls #userInfo {
+        margin: 0 0 0.5rem 0;
+        font-size: 0.85rem;
+        word-break: break-word; /* ป้องกันข้อความยาวล้น */
+    }
+
+    .user-info-controls #logoutButton {
+        width: 100%;
+        font-size: 0.9rem;
+        padding: 0.5rem;
+        text-align: center;
+    }
+    .user-info-controls #logoutButton {
+        background-color: #dc3545; /* สีแดง (Bootstrap danger) */
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+    }
+    
+    .user-info-controls #logoutButton:hover {
+        background-color: #c82333; /* สีแดงเข้มขึ้นเมื่อ hover */
+    }
+    /*///////////////////////////////////////////////////*/
+    .nav-menu {
+        flex-direction: column;
+        gap: 0;
+        display: none;
+        margin-top: 0.5rem;
+        background-color: var(--bg-light-color);
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-menu.show {
+        display: flex;
+    }
+
+    .nav-button {
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .hamburger {
+        display: block;
+    }
+}
+/*///////////////////////////////////////////////////////*/
+
+/*@media (max-width: 600px) {
+    .dashboard-nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .dashboard-nav li {
+        width: 100%;
+    }
+
+    .dashboard-nav .nav-button {
+        width: 100%;
+    }
+    .dashboard-nav {
+    background-color: var(--bg-light-color);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+    }
+}*/

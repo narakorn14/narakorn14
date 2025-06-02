@@ -19,7 +19,7 @@
     --warning-color: #ffc107;
 
     --font-family-main: 'Sarabun', sans-serif; /* หรือฟอนต์ที่คุณเลือก */
-    --font-size-base: 16px;
+    --font-size-base: 12px;
     --line-height-base: 1.6;
 
     --border-radius: 0.25rem; /* 4px */
@@ -35,6 +35,19 @@ body {
     margin: 0;
     /* display: flex; justify-content: center; align-items: center; min-height: 100vh; */
     /* คอมเมนต์ส่วน flex ของ body ออกก่อน ถ้ามันกระทบกับ layout อื่นๆ เช่น dashboard */
+}
+
+body.dashboard-page, /* หรือ body ถ้าต้องการให้มีผลกับทุกหน้า */
+body.login-page { /* ถ้าหน้า login มี footer และต้องการให้ติดล่าง */
+    display: flex;
+    flex-direction: column; /* ให้เรียงจากบนลงล่าง */
+    min-height: 100vh;    /* ให้ body สูงเต็มหน้าจอเสมอ */
+}
+
+/* ทำให้ main content ยืดเพื่อดัน footer ลงไป */
+main.container, /* หรือ selector ของ main content area ของคุณ */
+div.login-container { /* ถ้าหน้า login มีโครงสร้างที่ main content คือ login-container */
+    flex-grow: 1; /* หรือ flex: 1; */
 }
 
 h1, h2, h3, h4, h5, h6 {

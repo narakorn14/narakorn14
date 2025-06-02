@@ -14,7 +14,7 @@ const App = {
         // This function will be called by auth.js after user is logged in and role is fetched
         const mainContent = document.getElementById('mainContent');
         const userInfo = document.getElementById('userInfo');
-
+        
         if (!Auth.currentUser || !Auth.userRole) {
             mainContent.innerHTML = '<p>กำลังโหลดข้อมูลผู้ใช้...</p>';
             // Retry or wait a bit, then try again or show error.
@@ -27,7 +27,7 @@ const App = {
         if (userInfo) {
             userInfo.textContent = `ผู้ใช้: ${Auth.currentUser.email} (สิทธิ์: ${Auth.userRole === 'admin' ? 'ผู้ดูแลระบบ' : 'ครู'})`;
         }
-
+        
         if (Auth.isAdmin()) {
             mainContent.innerHTML = '<h2>หน้าแดชบอร์ดผู้ดูแลระบบ</h2>';
             // Load admin specific UI elements/functions
@@ -35,12 +35,30 @@ const App = {
         } else if (Auth.isTeacher()) {
             mainContent.innerHTML = '<h2>หน้าแดชบอร์ดครู</h2>';
             // Load teacher specific UI elements/functions
-            Teacher.init(mainContent); // Initialize teacher functionalities
+            Teacher.init(mainContent);            
+             // Initialize teacher functionalities
         } else {
             mainContent.innerHTML = '<p>ไม่พบสิทธิ์ผู้ใช้งานที่ถูกต้อง</p>';
             // Potentially logout user
              Auth.handleLogout();
         }
+        // ต้องรอให้เมนูถูกโหลดแล้วค่อยผูก Event 
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMenu = document.getElementById('navMenu');
+        const navButtons = document.querySelectorAll('.nav-menu .nav-button');
+
+        if (hamburgerBtn && navMenu) {
+            hamburgerBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('show');
+            });
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    navMenu.classList.remove('show');
+                });
+            });
+}
+
     }
 };
 

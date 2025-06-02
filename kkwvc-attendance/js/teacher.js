@@ -44,24 +44,33 @@ const Teacher = {
     renderNav: function() {
         const navElement = document.getElementById('dashboardNav');
         if (!navElement) return;
-
-        let classNavItems = '';
-        if (this.assignedClassesDetails.length > 0) {
-            classNavItems = this.assignedClassesDetails.map(cls =>
-                `<li><button class="nav-button" data-section="take-attendance" data-classid="${cls.id}">${cls.className} (เช็คชื่อ)</button></li>`
-            ).join('');
-        } else {
-            classNavItems = '<li><span class="nav-text">ยังไม่มีห้องเรียนที่ได้รับมอบหมาย</span></li>';
-        }
-
+    
+        let classNavItems = this.assignedClassesDetails.length > 0
+            ? this.assignedClassesDetails.map(cls =>
+                `<li><button class="nav-button" data-section="take-attendance" data-classid="${cls.id}">${cls.className} (เช็คชื่อ)</button></li>`).join('')
+            : '<li><span class="nav-text">ยังไม่มีห้องเรียนที่ได้รับมอบหมาย</span></li>';
+    
         navElement.innerHTML = `
-            <ul>
-                <li><button class="nav-button" data-section="dashboard">แดชบอร์ดครู</button></li>
+        <button class="hamburger" id="hamburgerBtn" aria-label="เมนู">
+        <i class="fa fa-bars"></i>
+      </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><button class="nav-button active" data-section="dashboard">แดชบอร์ดครู</button></li>
                 ${classNavItems}
                 <li><button class="nav-button" data-section="manage-my-students">จัดการนักเรียนในห้อง</button></li>
                 <li><button class="nav-button" data-section="reports">ดูรายงาน (ของฉัน)</button></li>
             </ul>
         `;
+    
+        const hamburgerBtn = navElement.querySelector('#hamburgerBtn');
+        const navMenu = navElement.querySelector('#navMenu');
+    
+        if (hamburgerBtn && navMenu) {
+            hamburgerBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('show');
+            });
+        }
+    
         navElement.querySelectorAll('.nav-button').forEach(button => {
             button.addEventListener('click', (e) => {
                 const section = e.target.dataset.section;
@@ -69,12 +78,11 @@ const Teacher = {
                 this.navigateTo(section, classId);
                 navElement.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
+                navMenu.classList.remove('show'); // ✅ ยุบเมนู
             });
         });
-         // Set initial active button
-        const firstButton = navElement.querySelector('.nav-button');
-        if (firstButton) firstButton.classList.add('active');
-    },
+    }
+    ,
 
     navigateTo: function(section, classId = null) {
         switch(section) {

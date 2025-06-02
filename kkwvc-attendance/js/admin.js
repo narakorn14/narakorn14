@@ -11,14 +11,18 @@ const Admin = {
         const navElement = document.getElementById('dashboardNav');
         if (!navElement) return;
         navElement.innerHTML = `
-            <ul>
-                <li><button class="nav-button" data-section="dashboard">แดชบอร์ดผู้ดูแล</button></li>
+        <button class="hamburger" id="hamburgerBtn" aria-label="เมนู">
+    <i class="fa fa-bars"></i>
+  </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><button class="nav-button active" data-section="dashboard">แดชบอร์ดผู้ดูแล</button></li>
                 <li><button class="nav-button" data-section="manage-teachers">จัดการครู</button></li>
                 <li><button class="nav-button" data-section="manage-classes">จัดการห้องเรียน</button></li>
                 <li><button class="nav-button" data-section="manage-students">จัดการนักเรียน</button></li>
                 <li><button class="nav-button" data-section="reports">ดูรายงาน</button></li>
             </ul>
         `;
+        
         navElement.querySelectorAll('.nav-button').forEach(button => {
             button.addEventListener('click', (e) => {
                 this.navigateTo(e.target.dataset.section);
