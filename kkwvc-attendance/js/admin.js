@@ -22,14 +22,26 @@ const Admin = {
                 <li><button class="nav-button" data-section="reports">ดูรายงาน</button></li>
             </ul>
         `;
-        
+        const hamburgerBtn = navElement.querySelector('#hamburgerBtn');
+        const navMenu = navElement.querySelector('#navMenu');
+    
+        if (hamburgerBtn && navMenu) {
+            hamburgerBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('show');
+            });
+        }
+    
         navElement.querySelectorAll('.nav-button').forEach(button => {
             button.addEventListener('click', (e) => {
-                this.navigateTo(e.target.dataset.section);
+                const section = e.target.dataset.section;
+                const classId = e.target.dataset.classid;
+                this.navigateTo(section, classId);
                 navElement.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
+                navMenu.classList.remove('show'); // ✅ ยุบเมนู
             });
         });
+
         // Set initial active button
         navElement.querySelector('.nav-button[data-section="dashboard"]').classList.add('active');
     },

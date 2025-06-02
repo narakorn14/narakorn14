@@ -42,23 +42,7 @@ const App = {
             // Potentially logout user
              Auth.handleLogout();
         }
-        // ต้องรอให้เมนูถูกโหลดแล้วค่อยผูก Event 
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const navMenu = document.getElementById('navMenu');
-        const navButtons = document.querySelectorAll('.nav-menu .nav-button');
-
-        if (hamburgerBtn && navMenu) {
-            hamburgerBtn.addEventListener('click', () => {
-                navMenu.classList.toggle('show');
-            });
-
-            navButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    navMenu.classList.remove('show');
-                });
-            });
-}
-
+        
     }
 };
 

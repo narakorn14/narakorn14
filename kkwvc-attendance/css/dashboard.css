@@ -1,179 +1,129 @@
 /* Styles for dashboard */
-body.dashboard-page { /* ใช้ class เฉพาะสำหรับ body ของหน้า dashboard */
+body.dashboard-page {
     display: block;
-    background-color: var(--bg-color); /* ใช้ var */
+    background-color: var(--bg-color);
+    font-family: 'Poppins', sans-serif;
 }
 
-body.dashboard-page, /* หรือ body ถ้าต้องการให้มีผลกับทุกหน้า */
-body.login-page { /* ถ้าหน้า login มี footer และต้องการให้ติดล่าง */
+/* ใช้ flex layout เพื่อให้ footer อยู่ล่างสุด */
+body.dashboard-page, body.login-page {
     display: flex;
-    flex-direction: column; /* ให้เรียงจากบนลงล่าง */
-    min-height: 100vh;    /* ให้ body สูงเต็มหน้าจอเสมอ */
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* ทำให้ main content ยืดเพื่อดัน footer ลงไป */
-main.container, /* หรือ selector ของ main content area ของคุณ */
-div.login-container { /* ถ้าหน้า login มีโครงสร้างที่ main content คือ login-container */
-    flex-grow: 1; /* หรือ flex: 1; */
+main.container, div.login-container {
+    flex-grow: 1;
 }
 
+/* HEADER */
 .dashboard-header {
-    background-color: var(--primary-color); /* ใช้ var */
-    color: var(--bg-light-color); /* ใช้ var */
-    padding: 1rem 1.5rem; /* ปรับ padding ให้สอดคล้อง 16px 24px */
+    background: linear-gradient(135deg, #007BFF, #0056b3);
+    color: var(--bg-light-color);
+    padding: 1rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* เพิ่มเงาเล็กน้อย */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
+/* HEADER - Title */
 .dashboard-header h1 {
-    margin: 0;
-    font-size: 1.5rem; /* ใช้ rem */
-    color: var(--bg-light-color); /* ใช้ var */
+    font-size: 1.7rem;
     font-weight: 600;
+    margin: 0;
+    color: white;
 }
 
+/* USER INFO */
 .user-info-controls {
     display: flex;
     align-items: center;
 }
 
 .user-info-controls #userInfo {
-    margin-right: 1rem; /* ใช้ rem */
-    font-size: 0.9rem;
+    margin-right: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #f8f9fa;
 }
-.user-info-controls #logoutButton { /* ทำให้ปุ่ม logout ดูเหมือนปุ่มรอง */
-    /* ใช้ class .btn .btn-secondary หรือ .btn-light ถ้ามี */
-    /* ถ้าไม่ใช้ class ก็ style ที่นี่: */
-    background-color: #dc3545;
-    color: var(--bg-light-color);
-    border: 1px solid var(--bg-light-color);
-    padding: 0.375rem 0.75rem; /* ปรับ padding */
+
+/* LOGOUT BUTTON */
+.user-info-controls #logoutButton {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
 }
+
 .user-info-controls #logoutButton:hover {
-    background-color: rgba(255,255,255,0.1);
-    border-color: var(--bg-light-color);
+    background: #e84148;
 }
 
+/* NAVIGATION */
 .dashboard-nav {
-    background-color: var(--bg-light-color); /* ใช้ var */
-    padding: 0.75rem 1.5rem; /* ปรับ padding */
-    border-bottom: 1px solid var(--border-color); /* ใช้ var */
-    /*box-shadow: 0 1px 3px rgba(0,0,0,0.05);*/
-    position: relative;
+    background: white;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 2px solid var(--border-color);
 }
 
+/* Navigation items */
 .dashboard-nav ul {
-    list-style-type: none;
+    display: flex;   
     padding: 0;
     margin: 0;
-    display: flex;
-    gap: 1rem; /* ใช้ gap แทน margin-right */
+    list-style: none;
 }
 
+/* Navigation Buttons */
 .dashboard-nav a, .dashboard-nav button.nav-button {
     text-decoration: none;
-    color: var(--text-light-color); /* สีเทาอ่อน */
-    font-weight: 500; /* ลดความหนาลงเล็กน้อย */
-    padding: 0.5rem 0.75rem; /* เพิ่ม padding ให้คลิกง่ายขึ้น */
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 0.95rem; /* ปรับขนาดฟอนต์ */
-    border-radius: var(--border-radius);
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+    color: #333;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: background 0.2s ease, color 0.2s ease;
 }
+
 .dashboard-nav a:hover, .dashboard-nav button.nav-button:hover {
+    background: rgba(0, 86, 179, 0.1);
     color: var(--primary-color);
-    background-color: rgba(0, 86, 179, 0.05); /* สีพื้นหลังอ่อนๆ เมื่อ hover */
 }
 
 .dashboard-nav a.active, .dashboard-nav button.nav-button.active {
-    color: var(--primary-color);
-    font-weight: 600; /* หนาขึ้นเมื่อ active */
-    background-color: rgba(0, 86, 179, 0.1); /* สีพื้นหลังเข้มขึ้นเมื่อ active */
-    /* border-bottom: 2px solid var(--primary-color); (อาจจะไม่ต้องใช้ถ้ามี background) */
-}
-
-/* .container ใน dashboard ควรจะใช้ Global .container */
-/* แต่ถ้าต้องการ style เฉพาะ ก็ทำได้ */
-.dashboard-container { /* ถ้ามี .container เฉพาะสำหรับ dashboard */
-    margin-top: 1.5rem; /* ใช้ rem */
-    background-color: var(--bg-light-color); /* ใช้ var */
-    padding: 1.5rem; /* ใช้ rem */
-    border-radius: calc(var(--border-radius) * 2); /* ใช้ var */
-    box-shadow: var(--box-shadow); /* ใช้ var */
-}
-
-/*////////////////////////////////////////////////////////*/
-.hamburger {
-    background-color: transparent;
-    border: none;
-    color: var(--primary-color); /* ใช้สีหลักของคุณ เช่น #0056b3 */
-    font-size: 1.6rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    display: none; /* จะเปิดใช้บนมือถือผ่าน media query */
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.hamburger:hover {
-    background-color: rgba(0, 86, 179, 0.1); /* สีพื้นหลังอ่อนตอน hover */
-    color: var(--primary-color);
-}
-
-.hamburger i {
-    pointer-events: none; /* ทำให้ไอคอนไม่ขัดขวางคลิกปุ่ม */
-}
-
-
-.nav-menu {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.nav-button {
-    background-color: transparent;
-    color: var(--text-light-color);
-    font-weight: 500;
-    padding: 0.6rem 1rem;
-    border: none;
-    border-radius: var(--border-radius);
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    white-space: nowrap;
-    background-color: #f8f9fa;
-}
-
-.nav-button:hover {
-    background-color: rgba(0, 123, 255, 0.1);
-    color: var(--primary-color);
-}
-
-.nav-button.active {
-    background-color: var(--primary-color);
-    color: #fff;
+    background: var(--primary-color);
+    color: white;
     font-weight: 600;
 }
-/*////////////////////////////////////////////////////////*/
 
-footer {
-    text-align: center;
-    margin-top: 2rem; /* ใช้ rem */
-    padding: 1rem; /* ใช้ rem */
-    background-color: #343a40; /* สีเข้ม อาจจะใช้ var ถ้ามี */
-    color: #f8f9fa;
-    font-size: 0.9rem; /* ใช้ rem */
+/* MAIN CONTAINER */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* FOOTER */
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #343a40;
+    color: white;
+    font-size: 0.9rem;
+}
+
+
 @media (max-width: 768px) {
+    /* ... (โค้ดเดิมของคุณสำหรับ .dashboard-header, .user-info-controls ฯลฯ) ... */
+
     .dashboard-header {
         flex-direction: column;
         align-items: flex-start;
@@ -181,7 +131,7 @@ footer {
         text-align: left;
     }
 
-    .dashboard-nav ul {
+    .dashboard-nav ul { /* สมมติว่านี่คือ nav หลักที่ถูกซ่อน ไม่ใช่ nav-menu */
         display: none;
     }
 
@@ -199,7 +149,7 @@ footer {
     .user-info-controls #userInfo {
         margin: 0 0 0.5rem 0;
         font-size: 0.85rem;
-        word-break: break-word; /* ป้องกันข้อความยาวล้น */
+        word-break: break-word;
     }
 
     .user-info-controls #logoutButton {
@@ -207,44 +157,78 @@ footer {
         font-size: 0.9rem;
         padding: 0.5rem;
         text-align: center;
-    }
-    .user-info-controls #logoutButton {
-        background-color: #dc3545; /* สีแดง (Bootstrap danger) */
+        background-color: #dc3545;
         color: #fff;
         border: none;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 1rem; /* มี padding ซ้ำ เอาอันนี้ */
         border-radius: var(--border-radius);
-        font-size: 0.9rem;
         cursor: pointer;
         transition: background-color 0.2s ease-in-out;
     }
     
     .user-info-controls #logoutButton:hover {
-        background-color: #c82333; /* สีแดงเข้มขึ้นเมื่อ hover */
+        background-color: #c82333;
     }
+
+    /*///////////////////////////////////////////////////*/
+    /* ส่วนที่ปรับปรุงสำหรับ .nav-menu และ .nav-button */
     /*///////////////////////////////////////////////////*/
     .nav-menu {
         flex-direction: column;
-        gap: 0;
-        display: none;
-        margin-top: 0.5rem;
-        background-color: var(--bg-light-color);
-        border-radius: var(--border-radius);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* gap: 0; /* ไม่จำเป็นถ้าใช้ border-bottom */
+        display: none; /* ซ่อนตามปกติ */
+        width: 100%; /* ทำให้เต็มความกว้างของ parent */
+        margin-top: 0.75rem; /* เพิ่มระยะห่างด้านบนเล็กน้อย */
+        background-color: var(--bg-light-color, #ffffff); /* fallback color */
+        border-radius: var(--border-radius, 8px); /* fallback radius */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); /* ปรับเงาให้ดูนุ่มนวลขึ้น */
+        overflow: hidden; /* สำคัญ: ช่วยให้ border-radius แสดงผลถูกต้องกับ child elements */
     }
 
     .nav-menu.show {
-        display: flex;
+        display: flex; /* แสดงเมื่อมี class 'show' */
+    }
+
+    .nav-menu li { /* Reset default list styles */
+        list-style: none;
+        margin: 0;
+        padding: 0;
     }
 
     .nav-button {
         width: 100%;
         text-align: left;
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid var(--border-color);
+        padding: 0.85rem 1.2rem; /* ปรับ padding ให้ดูสบายตาขึ้น */
+        font-size: 0.95rem; /* ปรับขนาดตัวอักษรเล็กน้อย */
+        color: var(--text-color, #333333); /* สีตัวอักษร (ควรมีตัวแปรนี้) */
+        background-color: transparent; /* พื้นหลังโปร่งใส */
+        border: none; /* เอา border ของ button เดิมออก */
+        border-bottom: 1px solid var(--border-color, #eeeeee); /* เส้นคั่นระหว่างรายการ */
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     }
 
-    .hamburger {
+    .nav-menu li:last-child .nav-button {
+        border-bottom: none; /* เอาเส้นคั่นของรายการสุดท้ายออก */
+    }
+
+    .nav-button:hover {
+        background-color: var(--hover-light-bg-color, #f5f5f5); /* สีพื้นหลังเมื่อ hover */
+        color: var(--primary-color, #007bff); /* สีตัวอักษรเมื่อ hover (อาจใช้สีหลักของเว็บ) */
+    }
+
+    .nav-button.active {
+        background-color: var(--primary-color, #007bff); /* สีพื้นหลังสำหรับปุ่ม active */
+        color: var(--primary-contrast-color, #ffffff); /* สีตัวอักษรสำหรับปุ่ม active */
+        font-weight: 600; /* ทำให้ตัวหนาขึ้นเล็กน้อย */
+    }
+
+    /* ถ้าต้องการให้ active state มี hover ที่ต่างออกไป (option) */
+    .nav-button.active:hover {
+         background-color: var(--primary-darker-color, #0056b3); /* สีเข้มขึ้นเมื่อ active และ hover */
+    }
+
+    .hamburger { /* (คงเดิม ถ้ามี) */
         display: block;
     }
 }
