@@ -1,29 +1,43 @@
 /* Styles for stlye section */
 :root {
-    --primary-color: #0056b3; /* สีน้ำเงินหลัก (ตัวอย่าง) */
+    --primary-color: #007bff; /* สีน้ำเงินหลัก (ตัวอย่าง) */
     --primary-color-darker: #00418a; /* สีเข้มขึ้นของ primary */
-    --primary-color-darkest: #003773; /* เข้มสุดๆ สำหรับ border */
+    --primary-color-darkest: #003773;
+    --primary-contrast-color: #ffffff;
+    --primary-darker-color: #0056b3; /* เข้มสุดๆ สำหรับ border */
+    --primary-color-rgb: 0, 123, 255;
     --secondary-color-darker: #0069d9;
     --secondary-color-darkest: #0062cc;
     --error-color-darker: #c82333;
     --error-color-darkest: #bd2130;
     --secondary-color: #007bff; /* สีน้ำเงินรอง (ตัวอย่าง) */
     --accent-color: #ffc107; /* สีเน้น (เช่น สีเหลือง) */
-    --text-color: #333;
-    --text-light-color: #555;
-    --bg-color: #f4f7f6;
-    --bg-light-color: #ffffff;
-    --border-color: #dee2e6;
+    --text-color: #333333;
+    --text-color-light: #666666;
+    --text-placeholder-color: #999999;
+    --bg-color: #f0f2f5;
+    --bg-light-color: #ffffff;   /* สีพื้นหลังของ container (ขาว) */
+    --input-bg-color: #ffffff;   /* สีพื้นหลัง input */
+    --border-color: #ced4da;     /* สีเส้นขอบ input */
+    --border-focus-color: var(--primary-color); /* สีเส้นขอบ input เมื่อ focus */
+    --border-radius-sm: 0.25rem; /* 4px */
+    --border-radius: 0.5rem;   /* 8px */
+    --border-radius-lg: 1rem;    /* 16px */
+    --danger-color: #dc3545;       /* สีสำหรับ error message */
+    --danger-bg-color: #f8d7da;    /* พื้นหลัง error message */
+    --danger-border-color: #f5c6cb; /* เส้นขอบ error message */
     --success-color: #28a745;
     --error-color: #dc3545;
     --warning-color: #ffc107;
-
+    --hover-light-bg-color: #f1f3f5;
     --font-family-main: 'Sarabun', sans-serif; /* หรือฟอนต์ที่คุณเลือก */
     --font-size-base: 12px;
     --line-height-base: 1.6;
-
-    --border-radius: 0.25rem; /* 4px */
-    --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* เงาทั่วไป */
+    --box-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.1); /* เงาใหญ่ขึ้น */
+    /* Font stack ที่ทันสมัยขึ้น */
+    --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 body {

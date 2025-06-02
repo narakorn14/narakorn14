@@ -1,125 +1,163 @@
 /* Styles for login section */
-body.login-page { /* ใช้ class เฉพาะสำหรับ body ของหน้า login */
+body.login-page {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: var(--bg-color); /* ใช้ var */
+    background-color: var(--bg-color);
+    font-family: var(--font-family-sans-serif);
+    color: var(--text-color);
+    padding: 1rem; /* เพิ่ม padding ให้ body เผื่อกรณี container ชิดขอบจอเล็ก */
+    box-sizing: border-box;
 }
 
 .login-container {
     background-color: var(--bg-light-color);
-    padding: 2rem; /* เพิ่ม padding */
-    border-radius: calc(var(--border-radius) * 2); /* 8px */
-    box-shadow: var(--box-shadow); /* ใช้ var */
+    padding: 2.5rem; /* เพิ่ม padding ภายใน container */
+    border-radius: var(--border-radius-lg); /* 1rem (16px) ทำให้ดูโค้งมนทันสมัย */
+    box-shadow: var(--box-shadow-lg); /* เงาที่ดูนุ่มนวลและชัดเจนขึ้น */
     text-align: center;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px; /* ขยาย max-width เล็กน้อย */
+    box-sizing: border-box;
 }
 
 .login-container .logo {
-    width: 70px; /* ปรับขนาดเล็กน้อย */
-    margin-bottom: 1.5rem;
-}
-
-.login-container h2 {
-    color: var(--primary-color);
-    margin-bottom: 0.25rem; /* ลดระยะห่าง */
-    font-size: 1.75rem; /* ปรับขนาด */
-}
-.login-container h3 {
-    margin-bottom: 1.5rem;
-    font-weight: 400; /* ปกติ */
-    color: var(--text-light-color); /* ใช้ var */
-    font-size: 1rem;
-}
-
-/* ปุ่มใน login ควรใช้ class .btn .btn-primary และ width: 100% */
-/* ใน HTML: <button type="submit" class="btn btn-primary" style="width:100%;">เข้าสู่ระบบ</button> */
-
-body.login-page {
-    background-color: #f0f2f5; /* สีพื้นหลังอ่อนๆ */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 1rem;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-}
-
-.login-container {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-}
-
-.logo {
-    width: 80px;
+    width: 80px; /* หรือ 100px ถ้าต้องการให้เด่นขึ้น */
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; /* เพิ่มระยะห่างด้านล่างโลโก้ */
 }
 
 .login-container h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #333;
+    color: var(--text-color); /* ใช้สี text ทั่วไป หรือ var(--primary-color) หากต้องการ */
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.75rem; /* ปรับขนาดให้เด่น */
+    font-weight: 600; /* ทำให้หนาขึ้นเล็กน้อย */
 }
 
 .login-container h3 {
-    margin-top: 0.5rem;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
-    color: #666;
+    margin-top: 0;
+    margin-bottom: 2rem; /* เพิ่มระยะห่างก่อนฟอร์ม */
+    font-size: 1rem;
+    font-weight: 400; /* ปกติ */
+    color: var(--text-light-color);
 }
 
 .form-group {
     text-align: left;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.25rem; /* ระยะห่างระหว่าง form group */
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.25rem;
-    font-size: 0.95rem;
-    color: #444;
+    margin-bottom: 0.5rem; /* ระยะห่างระหว่าง label และ input */
+    font-size: 0.9rem;
+    font-weight: 500; /* ทำให้ label ชัดขึ้นเล็กน้อย */
+    color: var(--text-color);
 }
 
-.form-group input {
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"] { /* ระบุ type input ให้ชัดเจน */
     width: 100%;
-    padding: 0.6rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
+    padding: 0.75rem 1rem; /* เพิ่ม padding ใน input */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius); /* 0.5rem (8px) */
     font-size: 1rem;
-    transition: border-color 0.2s;
+    color: var(--text-color);
+    background-color: var(--input-bg-color);
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+.form-group input::placeholder {
+    color: var(--text-placeholder-color);
+    opacity: 1; /* Firefox */
 }
 
 .form-group input:focus {
-    border-color: #007bff;
+    border-color: var(--border-focus-color);
     outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.25); /* Focus ring แบบ Bootstrap */
 }
 
-button[type="submit"] {
-    background-color: #007bff;
-    color: white;
-    padding: 0.6rem 1.25rem;
+/* สามารถใช้ class .btn .btn-primary แทนได้ หากกำหนดใน HTML */
+button[type="submit"],
+.btn.btn-primary { /* เพิ่ม .btn.btn-primary เผื่อคุณใช้ class */
+    background-color: var(--primary-color);
+    color: var(--primary-contrast-color);
+    padding: 0.75rem 1.5rem; /* ปรับ padding ให้สมดุล */
     border: none;
-    border-radius: 0.5rem;
+    border-radius: var(--border-radius); /* 0.5rem (8px) */
     font-size: 1rem;
+    font-weight: 500; /* น้ำหนักตัวอักษร */
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
     width: 100%;
+    text-transform: uppercase; /* ทำให้ตัวอักษรใหญ่ทั้งหมด ดูเป็นปุ่มมากขึ้น (optional) */
+    letter-spacing: 0.5px; /* เพิ่มระยะห่างตัวอักษรเล็กน้อย (optional) */
+    margin-top: 1rem; /* เพิ่มระยะห่างด้านบนปุ่ม */
 }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
+button[type="submit"]:hover,
+.btn.btn-primary:hover {
+    background-color: var(--primary-darker-color);
+    transform: translateY(-1px); /* เอฟเฟกต์ลอยขึ้นเล็กน้อยเมื่อ hover */
+}
+
+button[type="submit"]:active,
+.btn.btn-primary:active {
+    transform: translateY(0); /* กลับสู่ตำแหน่งเดิมเมื่อคลิก */
 }
 
 .error-message {
-    color: red;
-    margin-top: 1rem;
+    color: var(--danger-color);
+    background-color: var(--danger-bg-color);
+    border: 1px solid var(--danger-border-color);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--border-radius);
+    margin-top: 1.5rem; /* เพิ่มระยะห่างหากมี error */
     font-size: 0.9rem;
+    text-align: left; /* ให้ข้อความ error ชิดซ้าย ถ้ามันยาว */
+}
+
+/* Responsive adjustments (สำหรับมือถือ) */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 2rem; /* ลด padding บนมือถือ */
+        margin: 1rem auto; /* ให้มีระยะห่างจากขอบบนมือถือบ้าง */
+    }
+
+    .login-container h2 {
+        font-size: 1.5rem; /* ลดขนาดหัวข้อใหญ่ */
+    }
+
+    .login-container h3 {
+        font-size: 0.9rem; /* ลดขนาดหัวข้อรอง */
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="password"],
+    .form-group input[type="email"] {
+        padding: 0.65rem 0.85rem; /* ปรับ padding input บนมือถือเล็กน้อย */
+    }
+
+    button[type="submit"],
+    .btn.btn-primary {
+        padding: 0.65rem 1rem; /* ปรับ padding ปุ่มบนมือถือ */
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 1.5rem; /* ลด padding อีกสำหรับจอมือถือที่เล็กมากๆ */
+        border-radius: var(--border-radius); /* ลดความโค้งมนลงเล็กน้อย */
+    }
+    .login-container .logo {
+        width: 60px;
+        margin-bottom: 1rem;
+    }
 }

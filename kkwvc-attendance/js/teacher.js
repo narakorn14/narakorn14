@@ -29,7 +29,7 @@ const Teacher = {
             if (this.assignedClasses.length > 0) {
                 const classPromises = this.assignedClasses.map(classId => db.collection('classes').doc(classId).get());
                 const classDocs = await Promise.all(classPromises);
-                this.assignedClassesDetails = classDocs.filter(doc => doc.exists).map(doc => ({id: doc.id, ...doc.data()}));
+                this.assignedClassesDetails = classDocs.filter(doc => doc.exists).map(doc => ({ id: doc.id, className: doc.data().className, ...doc.data() }));
             } else {
                 this.assignedClassesDetails = [];
             }
@@ -101,8 +101,8 @@ const Teacher = {
                 StudentManager.init(this.mainContentElement, 'teacher', this.currentTeacherId, this.assignedClassesDetails);
                 break;
             case 'reports':
-                Report.showReportUI(this.mainContentElement, 'teacher', this.currentTeacherId, this.assignedClassesDetails);
-                break;
+                Report.showReportUI(this.mainContentElement, 'teacher', this.currentTeacherId, this.assignedClassesDetails); // <--- แก้ไขเป็นชื่อนี้
+            break;
             default:
                 this.showDashboard();
         }

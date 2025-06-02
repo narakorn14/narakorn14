@@ -123,7 +123,10 @@ footer {
 
 @media (max-width: 768px) {
     /* ... (โค้ดเดิมของคุณสำหรับ .dashboard-header, .user-info-controls ฯลฯ) ... */
-
+    h1 { font-size: 2.25rem; } /* 36px */
+    h2 { font-size: 24px; } /* 30px */
+    h3 { font-size: 1.5rem; } /* 24px */
+    h4 { font-size: 16px; } /* 18px */
     .dashboard-header {
         flex-direction: column;
         align-items: flex-start;

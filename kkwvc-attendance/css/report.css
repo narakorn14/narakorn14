@@ -1,72 +1,93 @@
 /* Styles for report section */
 .report-filters {
     display: flex;
-    flex-wrap: wrap; /* ดีแล้ว */
-    gap: 1rem; /* ปรับ gap */
+    flex-wrap: wrap;
+    align-items: flex-end; /* จัดปุ่มให้อยู่บรรทัดล่างสุดถ้า filter สูงไม่เท่ากัน */
+    gap: 1rem;
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background-color: var(--bg-light-color); /* ใช้ var */
+    background-color: var(--bg-light-color);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
-    /* box-shadow: 0 1px 3px rgba(0,0,0,0.05); (ตัวเลือก) */
 }
 .report-filters .form-group {
-    margin-bottom: 0; /* ถูกต้องเมื่อใช้ gap */
-    flex: 1 1 200px; /* ให้ form-group ยืดหยุ่นได้ */
+    margin-bottom: 0;
+    flex: 1 1 180px; /* ปรับ flex-basis */
 }
-.report-filters .form-group label {
-    font-size: 0.9rem; /* ลดขนาด label เล็กน้อย */
+.report-filters button { /* สไตล์ปุ่มใน filter */
+    flex-shrink: 0; /* ไม่ให้ปุ่มหด */
 }
-.report-filters button#generateReportBtn {
-    /* ใช้ class .btn .btn-primary */
-    /* ถ้าไม่ใช้ class: */
-    background-color: var(--primary-color);
-    color: var(--bg-light-color);
-    align-self: flex-end; /* ให้ปุ่มอยู่ท้ายสุดของ flex item (ถ้า form-group สุดท้ายสูงกว่า) */
-}
-.report-filters button#generateReportBtn:hover {
-    background-color: var(--primary-color-darker);
+
+/* ปุ่ม Export CSV (อาจจะต้องใช้ FontAwesome หรือ Icon Library อื่น) */
+#exportReportBtn i {
+    margin-right: 0.5em;
 }
 
 
-#reportResultArea table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1.5rem;
-    background-color: var(--bg-light-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    overflow: hidden; /* สำหรับ border-radius ของตาราง */
-    font-size: 0.9rem; /* ลดขนาดฟอนต์ในตารางเล็กน้อย */
+/* Spreadsheet-like table style */
+.spreadsheet-style table {
+    border: 1px solid #ccc; /* เส้นขอบตารางหลัก */
+    font-size: 0.875rem; /* 14px */
 }
 
-#reportResultArea th,
-#reportResultArea td {
-    border-bottom: 1px solid var(--border-color); /* เส้นแนวนอน */
-    /* border-right: 1px solid var(--border-color); (ตัวเลือก ถ้าต้องการเส้นแนวตั้ง) */
-    padding: 0.6rem 0.75rem; /* ปรับ padding */
-    text-align: left;
+.spreadsheet-style th,
+.spreadsheet-style td {
+    border: 1px solid #ddd; /* เส้นของ Cell */
+    padding: 0.4rem 0.6rem;
+    white-space: nowrap; /* ไม่ให้ข้อความตกบรรทัดง่ายๆ (แต่ table-responsive-wrapper จะช่วย scroll) */
 }
-/* #reportResultArea td:last-child,
-#reportResultArea th:last-child {
-    border-right: none;
-} */
 
-#reportResultArea thead th {
-    background-color: var(--primary-color); /* สี header ของตาราง */
-    color: var(--bg-light-color); /* ใช้ var */
+.spreadsheet-style thead th {
+    background-color: #f2f2f2; /* สี header อ่อนๆ */
+    color: var(--text-color);
     font-weight: 600;
-    border-bottom-width: 0; /* อาจจะไม่ต้องใช้ถ้า header มีสีพื้นหลังแล้ว */
-    /* text-transform: uppercase; (ตัวเลือก) */
-    /* letter-spacing: 0.5px; (ตัวเลือก) */
+    position: sticky; /* (ตัวเลือก) ทำให้ header ตารางติดอยู่ด้านบนเมื่อ scroll */
+    top: 0;
+    z-index: 10;
 }
 
-#reportResultArea tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* สีสลับแถวอ่อนๆ */
+.spreadsheet-style tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
-#reportResultArea tbody tr:hover {
-    background-color: #e9ecef; /* สี hover เข้มขึ้นเล็กน้อย */
+.spreadsheet-style tbody tr:hover {
+    background-color: #e9e9e9;
 }
-#reportResultArea tbody tr:last-child td {
-    border-bottom: none;
+/* ใน css/report.css หรือ style.css */
+.loading-spinner {
+    border: 4px solid rgba(0,0,0,0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: var(--primary-color);
+    animation: spin 1s ease infinite;
+    margin: 20px auto;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+#reportResultArea p {
+    text-align: center;
+}
+.table-responsive-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    width: 100%;
+    margin-top: 1rem; /* Add some space above the table */
+}
+.report-filters.my-report-filters { /* สไตล์เฉพาะสำหรับ filter ของ "My Report" */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: var(--bg-light-color);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.report-filters.my-report-filters .form-group {
+    margin-bottom: 0;
+    flex: 1 1 220px; /* ให้ form-group ยืดหยุ่นได้ และมีขนาดพื้นฐาน */
 }
