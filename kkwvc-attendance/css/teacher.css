@@ -1,8 +1,59 @@
 /* Styles for teacher section */
 .class-selection-area {
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem; /* ใช้ rem */
+    padding: 1rem;
+    background-color: var(--bg-light-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
 }
 .class-selection-area label {
-    margin-right: 10px;
+    margin-right: 0.5rem; /* ใช้ rem */
+    font-weight: 500;
 }
-/* Add more specific styles as needed */
+.class-selection-area select {
+    /* สไตล์จะมาจาก Global .form-group select */
+    min-width: 200px; /* (ตัวเลือก) กำหนดความกว้างขั้นต่ำ */
+}
+
+/* สไตล์สำหรับตารางเช็คชื่อ (ถ้ามี) */
+#attendanceStudentList table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: var(--bg-light-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+#attendanceStudentList th,
+#attendanceStudentList td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#attendanceStudentList thead th {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+#attendanceStudentList tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+#attendanceStudentList tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#attendanceStudentList .status-select {
+    /* สไตล์จะมาจาก Global .form-group select */
+    padding: 0.375rem 0.5rem; /* อาจจะปรับให้เล็กลงหน่อย */
+    font-size: 0.9rem;
+}
+
+button#submitAttendanceBtn {
+    /* ใช้ class .btn .btn-primary */
+    margin-top: 1.5rem;
+}

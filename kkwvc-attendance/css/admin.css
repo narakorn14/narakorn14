@@ -26,3 +26,115 @@
 #teachersList button:hover, #classesList button:hover {
     background-color: #c82333;
 }
+/* Styles for admin section */
+
+/* Container สำหรับฟอร์มต่างๆ ให้ดูสอดคล้องกัน */
+.form-container { /* ใช้ class นี้แทน ID เพื่อความยืดหยุ่น */
+    background-color: var(--bg-light-color); /* ใช้สีพื้นหลังสว่าง */
+    padding: 20px;
+    border-radius: var(--border-radius); /* ใช้ var */
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color); /* ใช้ var */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* เงาเบาๆ */
+}
+
+/* ใช้ .form-container กับ #addTeacherFormContainer, #addClassFormContainer, และ #addStudentFormContainer ใน HTML */
+/* ถ้ายังต้องการใช้ ID ก็สามารถทำได้:
+#addTeacherFormContainer,
+#addClassFormContainer {
+    background-color: var(--bg-light-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+*/
+
+.list-group { /* Class กลางสำหรับรายการ */
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 1rem; /* เพิ่มระยะห่างด้านล่างรายการ */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-light-color);
+}
+
+.list-group-item { /* Class สำหรับแต่ละรายการ */
+    padding: 0.75rem 1.25rem; /* ปรับ padding */
+    border-bottom: 1px solid var(--border-color);
+    display: flex; /* ช่วยจัดปุ่มให้อยู่ท้ายสุด */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+    border-bottom-right-radius: var(--border-radius); /* ทำให้มุมโค้งสวยงาม */
+    border-bottom-left-radius: var(--border-radius);
+}
+.list-group-item:first-child {
+    border-top-right-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
+}
+
+
+/* ทำให้ปุ่มในรายการใช้ Utility Class .btn-danger และ .btn-sm */
+/* ใน JavaScript ที่สร้าง HTML สำหรับรายการ:
+   <button class="btn btn-danger btn-sm" onclick="Admin.deleteUser(...)">ลบ</button>
+*/
+
+/* ถ้ายังไม่แก้ JS สามารถใช้ CSS เฉพาะเจาะจงได้ แต่แนะนำให้แก้ JS เพื่อใช้ Utility Class */
+#teachersList .list-group-item button,
+#classesList .list-group-item button,
+.students-table .delete-student-btn { /* สมมติว่าตารางนักเรียนใช้ class นี้ */
+    margin-left: 10px;
+    /* สไตล์ปุ่มลบจะมาจาก .btn-danger .btn-sm ถ้าใส่ class ใน HTML */
+    /* ถ้าไม่ใส่ class ใน HTML ก็ต้อง style ที่นี่: */
+    /* background-color: var(--error-color); */
+    /* color: var(--bg-light-color); */
+    /* font-size: 0.8em; */
+    /* padding: 4px 8px; */
+    /* border-radius: var(--border-radius); */
+    /* border: 1px solid var(--error-color); */
+}
+/* #teachersList .list-group-item button:hover,
+#classesList .list-group-item button:hover,
+.students-table .delete-student-btn:hover {
+    background-color: var(--error-color-darker);
+    border-color: var(--error-color-darkest);
+} */
+
+
+/* เพิ่มสไตล์ให้ตารางนักเรียน (ถ้าใช้ table) ในส่วนจัดการนักเรียน */
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: var(--bg-light-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden; /* สำหรับ border-radius ของตาราง */
+}
+
+.students-table th,
+.students-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.students-table thead th {
+    background-color: var(--bg-color); /* สีพื้นหลังอ่อนๆ สำหรับ header */
+    color: var(--text-color);
+    font-weight: 600;
+    border-bottom-width: 2px; /* เส้นใต้ header หนาขึ้นหน่อย */
+}
+
+.students-table tbody tr:hover {
+    background-color: #f1f1f1; /* สีอ่อนๆ เมื่อ hover แถว */
+}
+
+.students-table tbody tr:last-child td {
+    border-bottom: none;
+}

@@ -1,21 +1,24 @@
-body { /* Override general body style for dashboard */
-    display: block; /* Remove flex centering */
-    background-color: #e9ecef;
+/* Styles for dashboard */
+body.dashboard-page { /* ใช้ class เฉพาะสำหรับ body ของหน้า dashboard */
+    display: block;
+    background-color: var(--bg-color); /* ใช้ var */
 }
 
 .dashboard-header {
-    background-color: #0056b3; /* KKWVC primary color */
-    color: white;
-    padding: 15px 30px;
+    background-color: var(--primary-color); /* ใช้ var */
+    color: var(--bg-light-color); /* ใช้ var */
+    padding: 1rem 1.5rem; /* ปรับ padding ให้สอดคล้อง 16px 24px */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* เพิ่มเงาเล็กน้อย */
 }
 
 .dashboard-header h1 {
     margin: 0;
-    font-size: 1.5em;
-    color: white;
+    font-size: 1.5rem; /* ใช้ rem */
+    color: var(--bg-light-color); /* ใช้ var */
+    font-weight: 600;
 }
 
 .user-info-controls {
@@ -24,13 +27,27 @@ body { /* Override general body style for dashboard */
 }
 
 .user-info-controls #userInfo {
-    margin-right: 20px;
+    margin-right: 1rem; /* ใช้ rem */
+    font-size: 0.9rem;
+}
+.user-info-controls #logoutButton { /* ทำให้ปุ่ม logout ดูเหมือนปุ่มรอง */
+    /* ใช้ class .btn .btn-secondary หรือ .btn-light ถ้ามี */
+    /* ถ้าไม่ใช้ class ก็ style ที่นี่: */
+    background-color: transparent;
+    color: var(--bg-light-color);
+    border: 1px solid var(--bg-light-color);
+    padding: 0.375rem 0.75rem; /* ปรับ padding */
+}
+.user-info-controls #logoutButton:hover {
+    background-color: rgba(255,255,255,0.1);
+    border-color: var(--bg-light-color);
 }
 
 .dashboard-nav {
-    background-color: #f8f9fa;
-    padding: 10px 30px;
-    border-bottom: 1px solid #dee2e6;
+    background-color: var(--bg-light-color); /* ใช้ var */
+    padding: 0.75rem 1.5rem; /* ปรับ padding */
+    border-bottom: 1px solid var(--border-color); /* ใช้ var */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .dashboard-nav ul {
@@ -38,41 +55,52 @@ body { /* Override general body style for dashboard */
     padding: 0;
     margin: 0;
     display: flex;
+    gap: 1rem; /* ใช้ gap แทน margin-right */
 }
 
 .dashboard-nav li {
-    margin-right: 20px;
+    /* margin-right: 20px; (ลบออก เพราะใช้ gap ใน ul) */
 }
 
 .dashboard-nav a, .dashboard-nav button.nav-button {
     text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-    padding: 8px 0;
+    color: var(--text-light-color); /* สีเทาอ่อน */
+    font-weight: 500; /* ลดความหนาลงเล็กน้อย */
+    padding: 0.5rem 0.75rem; /* เพิ่ม padding ให้คลิกง่ายขึ้น */
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 0.95rem; /* ปรับขนาดฟอนต์ */
+    border-radius: var(--border-radius);
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 }
+.dashboard-nav a:hover, .dashboard-nav button.nav-button:hover {
+    color: var(--primary-color);
+    background-color: rgba(0, 86, 179, 0.05); /* สีพื้นหลังอ่อนๆ เมื่อ hover */
+}
+
 .dashboard-nav a.active, .dashboard-nav button.nav-button.active {
-    color: #0056b3;
-    border-bottom: 2px solid #0056b3;
+    color: var(--primary-color);
+    font-weight: 600; /* หนาขึ้นเมื่อ active */
+    background-color: rgba(0, 86, 179, 0.1); /* สีพื้นหลังเข้มขึ้นเมื่อ active */
+    /* border-bottom: 2px solid var(--primary-color); (อาจจะไม่ต้องใช้ถ้ามี background) */
 }
 
-
-.container { /* For main content area */
-    margin-top: 20px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* .container ใน dashboard ควรจะใช้ Global .container */
+/* แต่ถ้าต้องการ style เฉพาะ ก็ทำได้ */
+.dashboard-container { /* ถ้ามี .container เฉพาะสำหรับ dashboard */
+    margin-top: 1.5rem; /* ใช้ rem */
+    background-color: var(--bg-light-color); /* ใช้ var */
+    padding: 1.5rem; /* ใช้ rem */
+    border-radius: calc(var(--border-radius) * 2); /* ใช้ var */
+    box-shadow: var(--box-shadow); /* ใช้ var */
 }
 
 footer {
     text-align: center;
-    margin-top: 30px;
-    padding: 15px;
-    background-color: #343a40;
+    margin-top: 2rem; /* ใช้ rem */
+    padding: 1rem; /* ใช้ rem */
+    background-color: #343a40; /* สีเข้ม อาจจะใช้ var ถ้ามี */
     color: #f8f9fa;
-    font-size: 0.9em;
+    font-size: 0.9rem; /* ใช้ rem */
 }

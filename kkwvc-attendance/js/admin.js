@@ -64,7 +64,7 @@ const Admin = {
     showManageTeachers: async function() {
         this.mainContentElement.innerHTML = `
             <h3>จัดการบัญชีครู</h3>
-            <div id="addTeacherFormContainer">
+            <div id="addTeacherFormContainer" class="form-container">
                 <h4>เพิ่มครูใหม่</h4>
                 <form id="addTeacherForm">
                     <div class="form-group">
@@ -168,8 +168,8 @@ const Admin = {
             querySnapshot.forEach(doc => {
                 const teacher = doc.data();
                 html += `<li>${teacher.displayName} (${teacher.email}) - UID: ${doc.id}
-                            <button onclick="Admin.deleteUser('${doc.id}', '${teacher.displayName}')">ลบ</button>
-                         </li>`;
+            <button class="btn btn-danger btn-sm" onclick="Admin.deleteUser('${doc.id}', '${teacher.displayName}')">ลบ</button>
+                        </li>`;
             });
             html += '</ul>';
             listEl.innerHTML = html;
@@ -202,7 +202,7 @@ const Admin = {
     showManageClasses: async function() {
         this.mainContentElement.innerHTML = `
             <h3>จัดการห้องเรียน</h3>
-            <div id="addClassFormContainer">
+            <div id="addClassFormContainer" class="form-container">
                 <h4>เพิ่มห้องเรียนใหม่</h4>
                 <form id="addClassForm">
                     <div class="form-group">

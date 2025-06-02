@@ -1,29 +1,72 @@
+/* Styles for report section */
 .report-filters {
     display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
+    flex-wrap: wrap; /* ดีแล้ว */
+    gap: 1rem; /* ปรับ gap */
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: var(--bg-light-color); /* ใช้ var */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    /* box-shadow: 0 1px 3px rgba(0,0,0,0.05); (ตัวเลือก) */
 }
 .report-filters .form-group {
-    margin-bottom: 0; /* Reset since gap is used */
+    margin-bottom: 0; /* ถูกต้องเมื่อใช้ gap */
+    flex: 1 1 200px; /* ให้ form-group ยืดหยุ่นได้ */
 }
+.report-filters .form-group label {
+    font-size: 0.9rem; /* ลดขนาด label เล็กน้อย */
+}
+.report-filters button#generateReportBtn {
+    /* ใช้ class .btn .btn-primary */
+    /* ถ้าไม่ใช้ class: */
+    background-color: var(--primary-color);
+    color: var(--bg-light-color);
+    align-self: flex-end; /* ให้ปุ่มอยู่ท้ายสุดของ flex item (ถ้า form-group สุดท้ายสูงกว่า) */
+}
+.report-filters button#generateReportBtn:hover {
+    background-color: var(--primary-color-darker);
+}
+
+
 #reportResultArea table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 1.5rem;
+    background-color: var(--bg-light-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden; /* สำหรับ border-radius ของตาราง */
+    font-size: 0.9rem; /* ลดขนาดฟอนต์ในตารางเล็กน้อย */
 }
-#reportResultArea th, #reportResultArea td {
-    border: 1px solid #ddd;
-    padding: 8px;
+
+#reportResultArea th,
+#reportResultArea td {
+    border-bottom: 1px solid var(--border-color); /* เส้นแนวนอน */
+    /* border-right: 1px solid var(--border-color); (ตัวเลือก ถ้าต้องการเส้นแนวตั้ง) */
+    padding: 0.6rem 0.75rem; /* ปรับ padding */
     text-align: left;
 }
-#reportResultArea th {
-    background-color: #007bff;
-    color: white;
+/* #reportResultArea td:last-child,
+#reportResultArea th:last-child {
+    border-right: none;
+} */
+
+#reportResultArea thead th {
+    background-color: var(--primary-color); /* สี header ของตาราง */
+    color: var(--bg-light-color); /* ใช้ var */
+    font-weight: 600;
+    border-bottom-width: 0; /* อาจจะไม่ต้องใช้ถ้า header มีสีพื้นหลังแล้ว */
+    /* text-transform: uppercase; (ตัวเลือก) */
+    /* letter-spacing: 0.5px; (ตัวเลือก) */
 }
+
 #reportResultArea tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f9f9f9; /* สีสลับแถวอ่อนๆ */
+}
+#reportResultArea tbody tr:hover {
+    background-color: #e9ecef; /* สี hover เข้มขึ้นเล็กน้อย */
+}
+#reportResultArea tbody tr:last-child td {
+    border-bottom: none;
 }

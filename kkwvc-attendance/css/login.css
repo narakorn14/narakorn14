@@ -1,23 +1,52 @@
+/* Styles for login section */
+body.login-page { /* ใช้ class เฉพาะสำหรับ body ของหน้า login */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color); /* ใช้ var */
+}
+
 .login-container {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: var(--bg-light-color);
+    padding: 2rem; /* เพิ่ม padding */
+    border-radius: calc(var(--border-radius) * 2); /* 8px */
+    box-shadow: var(--box-shadow); /* ใช้ var */
     text-align: center;
     width: 100%;
     max-width: 400px;
 }
 
 .login-container .logo {
-    width: 80px; /* หรือขนาดที่เหมาะสม */
-    margin-bottom: 20px;
+    width: 70px; /* ปรับขนาดเล็กน้อย */
+    margin-bottom: 1.5rem;
 }
 
 .login-container h2 {
-    margin-bottom: 5px;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem; /* ลดระยะห่าง */
+    font-size: 1.75rem; /* ปรับขนาด */
 }
 .login-container h3 {
-    margin-bottom: 20px;
-    font-weight: normal;
-    color: #555;
+    margin-bottom: 1.5rem;
+    font-weight: 400; /* ปกติ */
+    color: var(--text-light-color); /* ใช้ var */
+    font-size: 1rem;
+}
+
+/* ปุ่มใน login ควรใช้ class .btn .btn-primary และ width: 100% */
+/* ใน HTML: <button type="submit" class="btn btn-primary" style="width:100%;">เข้าสู่ระบบ</button> */
+
+/* ถ้ายังไม่ได้แก้ HTML: */
+.login-container form button[type="submit"] {
+    width: 100%; /* ทำให้ปุ่มเต็มความกว้าง */
+    margin-top: 0.5rem; /* เพิ่มระยะห่างด้านบนเล็กน้อย */
+    /* สไตล์จะมาจาก .btn-primary ถ้าใส่ class */
+    /* ถ้าไม่ใส่ class: */
+    background-color: var(--primary-color);
+    color: var(--bg-light-color);
+    padding: 0.6rem 1rem; /* ปรับ padding */
+}
+.login-container form button[type="submit"]:hover {
+    background-color: var(--primary-color-darker);
 }
