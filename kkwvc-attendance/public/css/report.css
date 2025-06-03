@@ -62,6 +62,46 @@
     animation: spin 1s ease infinite;
     margin: 20px auto;
 }
+
+/* Styles for Report Table Status */
+.status-cell {
+    padding: 0.5em 0.75em; /* Adjust padding as needed */
+    text-align: center;
+    font-weight: 500;
+    border-radius: var(--border-radius-sm, 4px); /* Optional: for rounded corners */
+    color: var(--text-color, #333); /* Default text color */
+}
+
+.status-present {
+    background-color: #e6ffed; /* Light Green */
+    color: #006400; /* Dark Green text */
+    /* border: 1px solid #a3e9a4; */ /* Optional border */
+}
+
+.status-absent {
+    background-color: #ffebee; /* Light Red */
+    color: #c62828; /* Dark Red text */
+    /* border: 1px solid #ffcdd2; */ /* Optional border */
+}
+
+.status-late {
+    background-color: #fff8e1; /* Light Orange/Yellow */
+    color: #e65100; /* Dark Orange text */
+    /* border: 1px solid #ffecb3; */ /* Optional border */
+}
+
+.status-leave {
+    background-color: #e3f2fd; /* Light Blue */
+    color: #0d47a1; /* Dark Blue text */
+    /* border: 1px solid #bbdefb; */ /* Optional border */
+}
+
+/* Optional: for empty status cells if you want them to look different */
+.status-empty {
+    /* background-color: #f5f5f5; /* Very light grey */
+    color: #9e9e9e; /* Grey text for empty */
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

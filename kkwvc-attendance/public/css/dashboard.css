@@ -1,26 +1,23 @@
 /* Styles for dashboard */
 body.dashboard-page {
-    display: block;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color, #f0f2f5);
     font-family: 'Poppins', sans-serif;
 }
 
-/* ใช้ flex layout เพื่อให้ footer อยู่ล่างสุด */
 body.dashboard-page, body.login-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* ทำให้ main content ยืดเพื่อดัน footer ลงไป */
 main.container, div.login-container {
     flex-grow: 1;
 }
 
 /* HEADER */
 .dashboard-header {
-    background: linear-gradient(135deg, #007BFF, #0056b3);
-    color: var(--bg-light-color);
+    background: linear-gradient(135deg, var(--primary-color, #007BFF), var(--primary-darker-color, #0056b3));
+    color: var(--primary-contrast-color, #ffffff);
     padding: 1rem 1.5rem;
     display: flex;
     justify-content: space-between;
@@ -28,12 +25,11 @@ main.container, div.login-container {
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* HEADER - Title */
 .dashboard-header h1 {
     font-size: 1.7rem;
     font-weight: 600;
     margin: 0;
-    color: white;
+    color: inherit;
 }
 
 /* USER INFO */
@@ -46,68 +42,98 @@ main.container, div.login-container {
     margin-right: 1rem;
     font-size: 1rem;
     font-weight: 500;
-    color: #f8f9fa;
+    color: var(--primary-contrast-color, #f8f9fa);
 }
 
-/* LOGOUT BUTTON */
 .user-info-controls #logoutButton {
-    background: #ff4757;
-    color: white;
+    background: var(--danger-color, #ff4757);
+    color: var(--primary-contrast-color, white);
     border: none;
     padding: 0.5rem 1rem;
-    border-radius: 5px;
+    border-radius: var(--border-radius-sm, 5px);
     cursor: pointer;
     transition: background 0.3s ease-in-out;
 }
 
 .user-info-controls #logoutButton:hover {
-    background: #e84148;
+    background: var(--error-color-darker, #e84148);
 }
 
-/* NAVIGATION */
+/* NAVIGATION BAR (.dashboard-nav) */
 .dashboard-nav {
-    background: white;
+    background: var(--bg-light-color, white);
     padding: 0.75rem 1.5rem;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color, #e0e0e0);
+    position: relative; /* For potential absolute positioning of a dropdown menu */
 }
 
-/* Navigation items */
-.dashboard-nav ul {
-    display: flex;   
+/* HAMBURGER BUTTON - Assuming you have your own styles or it's handled elsewhere */
+/* .hamburger { ... } */
+
+
+/* NAVIGATION MENU (ul.nav-menu) */
+.nav-menu {
+    display: flex; /* Horizontal layout on desktop */
+    align-items: center;
+    list-style: none;
     padding: 0;
     margin: 0;
-    list-style: none;
+    /* overflow-x: auto; /* Optional: For many items on smaller desktops */
+    /* white-space: nowrap; /* Optional: with overflow-x: auto */
 }
 
-/* Navigation Buttons */
-.dashboard-nav a, .dashboard-nav button.nav-button {
+.nav-menu li {
+    margin-right: 0.25rem; /* Spacing between nav items */
+}
+.nav-menu li:last-child {
+    margin-right: 0;
+}
+
+/* NAVIGATION BUTTONS (li > button.nav-button) */
+.nav-button {
+    display: block;
     text-decoration: none;
-    color: #333;
+    color: var(--text-color, #333);
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    transition: background 0.2s ease, color 0.2s ease;
+    padding: 0.65rem 1rem;
+    border-radius: var(--border-radius-sm, 6px);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    text-align: center;
 }
 
-.dashboard-nav a:hover, .dashboard-nav button.nav-button:hover {
-    background: rgba(0, 86, 179, 0.1);
-    color: var(--primary-color);
+.nav-button:hover {
+    background-color: var(--hover-light-bg-color, rgba(0, 86, 179, 0.1));
+    color: var(--primary-color, #007BFF);
 }
 
-.dashboard-nav a.active, .dashboard-nav button.nav-button.active {
-    background: var(--primary-color);
-    color: white;
+.nav-button.active {
+    background-color: var(--primary-color, #007BFF);
+    color: var(--primary-contrast-color, white);
     font-weight: 600;
 }
+.nav-button.active:hover {
+    background-color: var(--primary-darker-color, #0056b3);
+}
+
 
 /* MAIN CONTAINER */
 .container {
     max-width: 900px;
     margin: 40px auto;
     padding: 2rem;
-    background: white;
-    border-radius: 12px;
+    background: var(--bg-light-color, white);
+    border-radius: var(--border-radius-lg, 12px);
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hamburger { /* (คงเดิม ถ้ามี) */
+    display: none;
 }
 
 /* FOOTER */
@@ -115,11 +141,10 @@ footer {
     text-align: center;
     margin-top: 2rem;
     padding: 1rem;
-    background: #343a40;
-    color: white;
+    background: var(--footer-bg-color, #343a40);
+    color: var(--footer-text-color, white);
     font-size: 0.9rem;
 }
-
 
 @media (max-width: 768px) {
     /* ... (โค้ดเดิมของคุณสำหรับ .dashboard-header, .user-info-controls ฯลฯ) ... */

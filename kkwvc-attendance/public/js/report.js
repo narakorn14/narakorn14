@@ -2,9 +2,9 @@ const Report = {
     mainContentElement: null,
     userRole: null,
     teacherId: null,
-    teacherClassesDetails: [], // Array of {id, className}
+    teacherClassesDetails: [],
     debounceTimeout: null,
-    currentReportData: [], // To store data for CSV export
+    currentReportData: [], // Stores raw data for CSV export and pivot transformation
 
     // --- Initialize UI and Event Listeners ---
     showReportUI: async function(mainContentElement, role, teacherId = null, teacherClassesDetails = []) {
@@ -15,9 +15,9 @@ const Report = {
             id: cls.id || cls.classId,
             className: cls.className || cls.name || 'N/A'
         }));
-        this.currentReportData = []; // Reset data
+        this.currentReportData = [];
 
-        this.renderReportPage(); // Render the basic page structure
+        this.renderReportPage();
 
         if (this.userRole === 'admin') {
             if (document.getElementById('reportClassSelectAdmin')) {
@@ -27,18 +27,17 @@ const Report = {
             if (adminGenerateBtn) {
                 adminGenerateBtn.addEventListener('click', () => this.fetchAndDisplayReport());
             }
-             const reportResultArea = document.getElementById('reportResultArea');
-             if(reportResultArea) reportResultArea.innerHTML = `<p>เลือกตัวกรองแล้วกด "สร้างรายงาน"</p>`;
+            const reportResultArea = document.getElementById('reportResultArea');
+            if (reportResultArea) reportResultArea.innerHTML = `<p>เลือกตัวกรองแล้วกด "สร้างรายงาน"</p>`;
 
         } else if (this.userRole === 'teacher') {
             this.attachTeacherEventListeners();
             if (this.teacherClassesDetails.length > 0) {
-                await this.fetchAndDisplayReport(); // Load initial report for teacher
+                await this.fetchAndDisplayReport();
             } else {
                 const reportResultArea = document.getElementById('reportResultArea');
                 if (reportResultArea) reportResultArea.innerHTML = '<p>คุณไม่ได้รับผิดชอบห้องเรียนใดๆ</p>';
             }
-            // Attach event listener for export button (only for teacher)
             const exportBtn = document.getElementById('exportReportBtn');
             if (exportBtn) {
                 exportBtn.addEventListener('click', () => this.exportDataToCSV());
@@ -48,7 +47,6 @@ const Report = {
 
     renderReportPage: function() {
         let classFilterHTML = '';
-        // Admin class filter
         if (this.userRole === 'admin') {
             classFilterHTML = `
                 <div class="form-group">
@@ -57,9 +55,7 @@ const Report = {
                         <option value="">-- ทุกห้องเรียน --</option>
                     </select>
                 </div>`;
-        }
-        // Teacher class filter
-        else if (this.userRole === 'teacher') {
+        } else if (this.userRole === 'teacher') {
             if (this.teacherClassesDetails.length > 0) {
                 const sortedClasses = [...this.teacherClassesDetails].sort((a, b) => a.className.localeCompare(b.className));
                 let options = sortedClasses.map(cls => `<option value="${cls.id}">${cls.className}</option>`).join('');
@@ -74,8 +70,6 @@ const Report = {
                             ${options}
                         </select>
                     </div>`;
-            } else {
-                classFilterHTML = ''; // No class filter if teacher has no classes
             }
         }
 
@@ -110,7 +104,6 @@ const Report = {
     },
 
     populateAdminClassDropdown: async function(selectElementId) {
-        // ... (โค้ดเดิมจากตัวอย่างที่แล้ว) ...
         const selectEl = document.getElementById(selectElementId);
         if (!selectEl) return;
         selectEl.innerHTML = '<option value="">กำลังโหลดห้องเรียน...</option>';
@@ -152,7 +145,7 @@ const Report = {
         const reportResultArea = document.getElementById('reportResultArea');
         if (!reportResultArea) return;
         reportResultArea.innerHTML = '<div class="loading-spinner"></div><p>กำลังโหลดรายงาน...</p>';
-        this.currentReportData = []; // Clear previous data
+        this.currentReportData = [];
 
         const startDateElem = document.getElementById('reportStartDate');
         const endDateElem = document.getElementById('reportEndDate');
@@ -197,9 +190,7 @@ const Report = {
                 const teacherClassIds = this.teacherClassesDetails.map(cls => cls.id);
                 if (teacherClassIds.length > 0 && teacherClassIds.length <= 10) {
                     query = query.where('classId', 'in', teacherClassIds);
-                } else if (teacherClassIds.length > 10) { // This case handled by dropdown logic now
-                    // This specific else-if might not be strictly needed if dropdown is disabled
-                    // but kept for safety.
+                } else if (teacherClassIds.length > 10) {
                      reportResultArea.innerHTML = `
                         <p style="color:orange;">คุณรับผิดชอบห้องเรียนมากกว่า 10 ห้อง</p>
                         <p>กรุณาเลือกดูรายงานทีละห้องจากเมนู "เลือกห้องเรียน" ด้านบน</p>`;
@@ -217,24 +208,36 @@ const Report = {
         if (specificStudentId) {
             query = query.where('studentId', '==', specificStudentId);
         }
-        // Note: The index from previous error should cover this: classId (ASC), date (DESC), studentId (ASC)
-        // If classId is not filtered (e.g. Admin all classes), an index on date (DESC), studentId (ASC) might be needed.
-        // For simplicity, we assume the existing complex index will be used or adapted.
-        query = query.orderBy('date', 'desc');
-        if (selectedClassId) query = query.orderBy('studentId'); // Only order by studentId if class is fixed.
-        else query = query.orderBy('classId').orderBy('studentId');
 
+        // Firestore requires the field used in inequality filters to be the first orderBy field.
+        query = query.orderBy('date'); // ORDER BY DATE FIRST
+
+        // Then, you can order by other fields.
+        // If a class is selected, it's good to sort by studentId within that class for that date.
+        // If no class is selected (e.g., admin all classes), you might want classId then studentId.
+        if (selectedClassId) {
+            query = query.orderBy('studentId');
+        } else {
+            // If querying across multiple classes, order by classId then studentId
+            // This helps in grouping/processing if needed, though our pivot mainly uses studentId
+            query = query.orderBy('classId').orderBy('studentId');
+        }
 
         try {
             const attendanceSnapshot = await query.get();
             if (attendanceSnapshot.empty) {
                 reportResultArea.innerHTML = '<p>ไม่พบข้อมูลการเข้าเรียนตามเงื่อนไขที่เลือก</p>';
+                this.currentReportData = []; // Ensure it's empty for export
                 return;
             }
 
             const { studentCache, classCache, teacherNameCache } = await this.fetchRelatedDataForReport(attendanceSnapshot);
+            // Prepare raw data first (for CSV and as base for pivoting)
             this.currentReportData = this.prepareDataForTableAndExport(attendanceSnapshot, studentCache, classCache, teacherNameCache);
-            this.renderReportTable(reportResultArea, this.currentReportData, startDate, endDate, selectedClassId, classCache);
+
+            // Then, transform data for the pivot table display
+            const { pivotedData, uniqueDates } = this.transformDataForPivotView(this.currentReportData);
+            this.renderReportTable(reportResultArea, pivotedData, uniqueDates, startDate, endDate, selectedClassId, classCache);
 
         } catch (error) {
             console.error("Error generating report:", error);
@@ -247,7 +250,6 @@ const Report = {
     },
 
     fetchRelatedDataForReport: async function(attendanceSnapshot) {
-        // ... (โค้ดเดิมจากตัวอย่างที่แล้ว, ไม่มีการเปลี่ยนแปลง) ...
         const studentCache = {};
         const classCache = {};
         const teacherNameCache = {};
@@ -289,7 +291,7 @@ const Report = {
             const teacherData = teacherNameCache[record.markedBy] || {};
 
             reportData.push({
-                date: record.date,
+                date: record.date, // Keep original date
                 className: classData.className || 'N/A',
                 classId: record.classId,
                 studentId: record.studentId,
@@ -299,34 +301,104 @@ const Report = {
                 markedBy: teacherData.displayName || (record.markedBy ? record.markedBy.substring(0,8) : 'N/A')
             });
         });
-        return reportData; // This data will be used for both table and CSV
+        // Sort by student name then date for easier processing in pivot
+        reportData.sort((a, b) => {
+            const nameA = `${a.studentFirstName} ${a.studentLastName}`.toLowerCase();
+            const nameB = `${b.studentFirstName} ${b.studentLastName}`.toLowerCase();
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+            if (a.date < b.date) return -1;
+            if (a.date > b.date) return 1;
+            return 0;
+        });
+        return reportData;
     },
 
-    renderReportTable: function(reportResultArea, reportData, startDate, endDate, selectedClassId, allClassCache) {
+    transformDataForPivotView: function(reportData) {
+        const pivotedData = {}; // studentId -> { studentInfo, attendance: { date: status } }
+        const uniqueDatesSet = new Set();
+
+        reportData.forEach(record => {
+            uniqueDatesSet.add(record.date);
+
+            if (!pivotedData[record.studentId]) {
+                pivotedData[record.studentId] = {
+                    studentId: record.studentId,
+                    studentFirstName: record.studentFirstName,
+                    studentLastName: record.studentLastName,
+                    attendance: {}
+                };
+            }
+            pivotedData[record.studentId].attendance[record.date] = record.status;
+        });
+
+        const uniqueDates = Array.from(uniqueDatesSet).sort(); // Sort dates chronologically
+
+        // Convert pivotedData object to array AND SORT BY studentId
+        const sortedPivotedData = Object.values(pivotedData).sort((a, b) => {
+            // Compare studentId directly (assuming they are strings that sort naturally, e.g., "S001", "S002", "S010")
+            // If studentIds are purely numeric and stored as numbers, this sort is fine.
+            // If they are strings but need numerical sorting (e.g., "1", "2", "10"),
+            // you might need a more complex sort or ensure they are padded with leading zeros.
+            if (a.studentId < b.studentId) return -1;
+            if (a.studentId > b.studentId) return 1;
+            return 0;
+        });
+
+        return { pivotedData: sortedPivotedData, uniqueDates };
+    },
+
+    renderReportTable: function(reportResultArea, pivotedData, uniqueDates, startDate, endDate, selectedClassId, allClassCache) {
         let html = `<h4>รายงานระหว่างวันที่ ${startDate} ถึง ${endDate}</h4>`;
         if (selectedClassId && allClassCache[selectedClassId]) {
             html += `<p><strong>ห้องเรียน:</strong> ${allClassCache[selectedClassId].className}</p>`;
         } else if (!selectedClassId && this.userRole === 'teacher' && this.teacherClassesDetails.length > 0 && this.teacherClassesDetails.length <= 10) {
             html += `<p><strong>ห้องเรียน:</strong> ทุกห้องของคุณ</p>`;
+        } else if (!selectedClassId && this.userRole === 'admin') {
+            html += `<p><strong>ห้องเรียน:</strong> ทุกห้องเรียน</p>`;
         }
 
-        html += '<div class="table-responsive-wrapper spreadsheet-style">'; // Add spreadsheet-style class
-        html += '<table><thead><tr><th>วันที่</th><th>ห้องเรียน</th><th>รหัสนักเรียน</th><th>ชื่อจริง</th><th>นามสกุล</th><th>สถานะ</th><th>ผู้บันทึก</th></tr></thead><tbody>';
+        html += '<div class="table-responsive-wrapper spreadsheet-style">';
+        html += '<table><thead><tr><th>รหัส</th><th>ชื่อจริง</th><th>นามสกุล</th>';
 
-        if (reportData.length === 0) {
-            html += '<tr><td colspan="7" style="text-align:center;">ไม่พบข้อมูล</td></tr>';
+        uniqueDates.forEach(date => {
+            html += `<th>${date}</th>`;
+        });
+        html += '</tr></thead><tbody>';
+
+        // Helper function to get status class
+        const getStatusClass = (statusText) => {
+            if (!statusText) return 'status-empty'; // For empty cells
+            switch (statusText) {
+                case 'มา':
+                    return 'status-present';
+                case 'ไม่มา':
+                    return 'status-absent';
+                case 'สาย':
+                    return 'status-late';
+                case 'ลา':
+                    return 'status-leave';
+                default:
+                    return ''; // No specific class for unknown status
+            }
+        };
+
+        if (!pivotedData || pivotedData.length === 0) {
+            const colspan = 3 + uniqueDates.length;
+            html += `<tr><td colspan="${colspan}" style="text-align:center;">ไม่พบข้อมูล</td></tr>`;
         } else {
-            reportData.forEach(item => {
-                html += `
-                    <tr>
-                        <td>${item.date}</td>
-                        <td>${item.className} (${item.classId})</td>
-                        <td>${item.studentId}</td>
-                        <td>${item.studentFirstName}</td>
-                        <td>${item.studentLastName}</td>
-                        <td>${item.status}</td>
-                        <td>${item.markedBy}</td>
-                    </tr>`;
+            pivotedData.forEach(studentData => {
+                html += `<tr>
+                            <td>${studentData.studentId}</td>
+                            <td>${studentData.studentFirstName}</td>
+                            <td>${studentData.studentLastName}</td>`;
+                uniqueDates.forEach(date => {
+                    const status = studentData.attendance[date] || '';
+                    const statusClass = getStatusClass(status);
+                    // Add class "status-cell" for base styling and specific status class
+                    html += `<td class="status-cell ${statusClass}">${status}</td>`; // MODIFIED
+                });
+                html += `</tr>`;
             });
         }
 
@@ -335,6 +407,7 @@ const Report = {
     },
 
     // --- CSV Export Functionality (for Teacher) ---
+    // This function remains unchanged as it uses this.currentReportData (the raw, row-based data)
     exportDataToCSV: function() {
         if (this.currentReportData.length === 0) {
             alert("ไม่มีข้อมูลให้ Export");
@@ -345,12 +418,11 @@ const Report = {
         let csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n";
 
         this.currentReportData.forEach(item => {
-            // Escape commas within fields if any (though unlikely for these fields)
             const escapeCSV = (field) => {
                 if (typeof field === 'string' && field.includes(',')) {
                     return `"${field.replace(/"/g, '""')}"`;
                 }
-                return field;
+                return String(field); // Ensure it's a string
             };
             const row = [
                 item.date,
@@ -369,7 +441,7 @@ const Report = {
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", `รายงานการเข้าเรียน_${new Date().toISOString().slice(0,10)}.csv`);
-        document.body.appendChild(link); // Required for FF
+        document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     }
