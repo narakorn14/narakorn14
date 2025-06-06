@@ -40,14 +40,19 @@ const Auth = {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const loginError = document.getElementById('loginError');
+
+        // ซ่อนข้อความ error เก่าทุกครั้งที่พยายาม login ใหม่
+        loginError.classList.remove('show');
         loginError.textContent = '';
 
         try {
             await auth.signInWithEmailAndPassword(email, password);
-            // Auth state listener will handle redirect
+            // Auth state listener จะจัดการเรื่องการ redirect
         } catch (error) {
             console.error("Login failed:", error);
-            loginError.textContent = "อีเมลหรือรหัสผ่านไม่ถูกต้อง: " + error.message;
+            // กำหนดข้อความและเพิ่ม class 'show' เพื่อให้แสดงผล
+            loginError.textContent = "อีเมลหรือรหัสผ่านไม่ถูกต้อง"; 
+            loginError.classList.add('show');
         }
     },
 

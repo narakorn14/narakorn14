@@ -40,7 +40,7 @@ const Attendance = {
             const studentsSnapshot = await db.collection('students')
                                            .where('classId', '==', classId)
                                            .where('active', '==', true)
-                                           .orderBy('lastName').orderBy('firstName')
+                                           .orderBy('studentId')
                                            .get();
 
             if (studentsSnapshot.empty) {

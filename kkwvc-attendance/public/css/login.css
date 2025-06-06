@@ -117,9 +117,17 @@ button[type="submit"]:active,
     border: 1px solid var(--danger-border-color);
     padding: 0.75rem 1.25rem;
     border-radius: var(--border-radius);
-    margin-top: 1.5rem; /* เพิ่มระยะห่างหากมี error */
+    margin-top: 1.5rem;
     font-size: 0.9rem;
-    text-align: left; /* ให้ข้อความ error ชิดซ้าย ถ้ามันยาว */
+    text-align: left;
+    
+    /* --- เพิ่ม 2 บรรทัดนี้ --- */
+    display: none; /* ซ่อนเป็นค่าเริ่มต้น */
+}
+
+/* --- เพิ่ม class ใหม่นี้เข้าไป --- */
+.error-message.show {
+    display: block; /* สั่งให้แสดงผลเมื่อมี class .show */
 }
 
 /* Responsive adjustments (สำหรับมือถือ) */
