@@ -131,3 +131,177 @@
     margin-bottom: 0;
     flex: 1 1 220px; /* ให้ form-group ยืดหยุ่นได้ และมีขนาดพื้นฐาน */
 }
+/* --- Styles for Individual Attendance Report Table --- */
+
+/* Header for the student's name */
+.individual-report-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.individual-report-header h3 {
+    margin: 0 0 0.25rem 0;
+    color: var(--text-light-color);
+    font-size: 1rem;
+    font-weight: 500;
+}
+.individual-report-header p {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* General table styling improvements */
+.data-table {
+    width: 100%;
+    border-collapse: collapse; /* ทำให้เส้นขอบติดกัน */
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.data-table thead tr {
+    background-color: var(--bg-light-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.data-table th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase; /* ตัวพิมพ์ใหญ่ */
+    letter-spacing: 0.5px;
+    color: var(--text-light-color);
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+    background-color: var(--bg-light-color);
+}
+
+.data-table td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle; /* จัดให้อยู่กลางแนวตั้ง */
+}
+
+/* No data row */
+.data-table td.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light-color);
+    font-style: italic;
+}
+
+
+/* Styling the dropdown <select> */
+.status-select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+.status-select-edit {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none; /* remove default arrow */
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 2rem; /* space for custom arrow */
+}
+/* Custom arrow for select */
+.status-select-wrapper::after {
+    content: '\f078'; /* FontAwesome down-arrow */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text-light-color);
+}
+.status-select-edit:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
+}
+
+
+/* Styling the action cell (button and status text) */
+.action-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.btn-save {
+    background-color: var(--success-color, #28a745);
+    color: #fff;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.85rem;
+    display: inline-flex; /* for aligning icon and text */
+    align-items: center;
+    gap: 0.4rem;
+}
+.btn-save:hover {
+    background-color: var(--success-darker-color, #218838);
+}
+.btn-save:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+/* Status text like "กำลังบันทึก..." */
+.save-status {
+    margin-left: 0.75rem;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+/* Responsive for mobile */
+@media (max-width: 768px) {
+    .data-table thead {
+        display: none; /* ซ่อน header บนมือถือ */
+    }
+    .data-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 0.5rem;
+    }
+    .data-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+        border: none;
+        border-bottom: 1px dashed var(--border-color);
+    }
+    .data-table td:last-child {
+        border-bottom: none;
+    }
+    /* ใช้ data-label ที่เราเพิ่มใน JS มาแสดงเป็นหัวข้อ */
+    .data-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        margin-right: 1rem;
+        color: var(--text-light-color);
+    }
+    .action-cell {
+        justify-content: flex-end; /* จัดปุ่มไปทางขวา */
+    }
+}

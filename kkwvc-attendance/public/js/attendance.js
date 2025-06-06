@@ -62,7 +62,7 @@ const Attendance = {
             });
 
 
-            let html = '<table><thead><tr><th>รหัสนักเรียน</th><th>ชื่อ-นามสกุล</th><th>สถานะ</th></tr></thead><tbody>';
+            let html = '<table class="student-table"><thead><tr><th>รหัสนักเรียน</th><th>ชื่อ-นามสกุล</th><th>สถานะ</th></tr></thead><tbody>';
             studentsSnapshot.forEach(doc => {
                 const student = doc.data();
                 const studentFullName = `${student.firstName} ${student.lastName}`;
@@ -72,7 +72,7 @@ const Attendance = {
                     <tr data-studentid="${student.studentId}">
                         <td>${student.studentId}</td>
                         <td>${studentFullName}</td>
-                        <td>
+                        <td class="status-cell ${currentStatus}">
                             <select class="status-select">
                                 <option value="present" ${currentStatus === 'present' ? 'selected' : ''}>มา</option>
                                 <option value="absent" ${currentStatus === 'absent' ? 'selected' : ''}>ไม่มา</option>
@@ -84,6 +84,14 @@ const Attendance = {
             });
             html += '</tbody></table>';
             listEl.innerHTML = html;
+            document.addEventListener('change', function (e) {
+                if (e.target.classList.contains('status-select')) {
+                    const select = e.target;
+                    const td = select.closest('td');
+                    td.className = 'status-cell ' + select.value;
+                }
+            });
+            
 
         } catch (error) {
             console.error("Error loading students for attendance:", error);

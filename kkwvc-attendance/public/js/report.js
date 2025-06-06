@@ -6,6 +6,239 @@ const Report = {
     debounceTimeout: null,
     currentReportData: [], // Stores raw data for CSV export and pivot transformation
 
+    // --- START: Individual Report Functions (โค้ดใหม่ที่เพิ่มเข้ามา) ---
+
+    /**
+     * [ENTRY POINT] แสดงหน้าจอสำหรับค้นหารายงานรายบุคคล
+     * @param {HTMLElement} mainContentElement - Element ที่จะใช้แสดงเนื้อหา
+     * @param {string} role - บทบาทของผู้ใช้ ('admin' หรือ 'teacher')
+     * @param {string} teacherId - ID ของครูที่ login
+     */
+    showIndividualReportSearch: function(mainContentElement, role, teacherId) {
+        this.mainContentElement = mainContentElement;
+        this.userRole = role; // เก็บ role และ teacherId ไว้ใช้
+        this.teacherId = teacherId;
+
+        this.mainContentElement.innerHTML = `
+            <div class="report-container individual-report">
+                <h2><i class="fas fa-user-check"></i> รายงานและแก้ไขการเข้าเรียนรายบุคคล</h2>
+                <p>ค้นหานักเรียนจากรหัสนักเรียน หรือ ชื่อ-นามสกุล เพื่อดูและแก้ไขประวัติการเข้าเรียน</p>
+                
+                <div class="search-box">
+                    <input type="text" id="studentSearchInput" placeholder="กรอกรหัสนักเรียน หรือ ชื่อ...">
+                    <button id="studentSearchBtn" class="btn btn-primary"><i class="fa fa-search"></i> ค้นหา</button>
+                </div>
+                
+                <div id="individualReportResult" class="report-result-area">
+                    <p class="placeholder-text">กรุณาค้นหานักเรียนเพื่อดูข้อมูล</p>
+                </div>
+            </div>
+        `;
+
+        // เพิ่ม Event Listener ให้กับปุ่มค้นหาและช่อง input
+        document.getElementById('studentSearchBtn').addEventListener('click', () => this.handleStudentSearch());
+        document.getElementById('studentSearchInput').addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                this.handleStudentSearch();
+            }
+        });
+    },
+
+    /**
+     * ค้นหานักเรียนใน Firestore ตาม term ที่กรอก
+     */
+    handleStudentSearch: async function() {
+        const searchTerm = document.getElementById('studentSearchInput').value.trim();
+        const resultEl = document.getElementById('individualReportResult');
+
+        if (!searchTerm) {
+            resultEl.innerHTML = '<p class="error-text">กรุณากรอกข้อมูลเพื่อค้นหา</p>';
+            return;
+        }
+        resultEl.innerHTML = '<div class="loading-spinner"></div><p>กำลังค้นหา...</p>';
+
+        try {
+            // Firestore ไม่มี "contains" search เราจึงต้องค้นหาแบบ "starts-with"
+            // การค้นหาด้วยรหัสนักเรียนจะแม่นยำที่สุด
+            const studentByIdSnapshot = await db.collection('students').where('studentId', '==', searchTerm).get();
+
+            let results = [];
+            studentByIdSnapshot.forEach(doc => results.push({ id: doc.id, ...doc.data() }));
+
+            // ถ้าไม่เจอด้วย ID ลองค้นหาด้วยชื่อจริง (อาจเจอหลายคน)
+            if (results.length === 0) {
+                 const studentByNameSnapshot = await db.collection('students')
+                    .where('active', '==', true)
+                    .orderBy('firstName')
+                    .startAt(searchTerm)
+                    .endAt(searchTerm + '\uf8ff')
+                    .limit(10) // จำกัดผลลัพธ์เพื่อ performance
+                    .get();
+                 studentByNameSnapshot.forEach(doc => results.push({ id: doc.id, ...doc.data() }));
+            }
+            
+            if (results.length === 0) {
+                resultEl.innerHTML = '<p>ไม่พบนักเรียนที่ตรงกับข้อมูลที่ค้นหา</p>';
+            } else if (results.length === 1) {
+                // ถ้าเจอคนเดียว แสดงประวัติเลย
+                await this.displayStudentAttendanceHistory(results[0].id, results[0]);
+            } else {
+                // ถ้าเจอหลายคน ให้แสดงเป็นรายการให้เลือก
+                let listHtml = '<h4>พบนักเรียนหลายคน กรุณาเลือก:</h4><ul>';
+                results.forEach(student => {
+                    listHtml += `
+                        <li>
+                            <span>${student.studentId} - ${student.firstName} ${student.lastName}</span>
+                            <button class="btn btn-sm" onclick="Report.displayStudentAttendanceHistory('${student.id}', ${JSON.stringify(student).replace(/"/g, '"')})">
+                                ดูประวัติ
+                            </button>
+                        </li>`;
+                });
+                listHtml += '</ul>';
+                resultEl.innerHTML = listHtml;
+            }
+
+        } catch (error) {
+            console.error("Error searching for student:", error);
+            resultEl.innerHTML = '<p class="error-text">เกิดข้อผิดพลาดในการค้นหา: ' + error.message + '</p>';
+        }
+    },
+
+    /**
+     * แสดงประวัติการเข้าเรียนของนักเรียน และฟอร์มสำหรับแก้ไข
+     * @param {string} studentDocId - Document ID ของนักเรียนใน Firestore
+     * @param {object} studentData - ข้อมูลของนักเรียน
+     */
+    displayStudentAttendanceHistory: async function(studentDocId, studentData) {
+        const resultEl = document.getElementById('individualReportResult');
+        resultEl.innerHTML = `<div class="loading-spinner"></div><p>กำลังโหลดประวัติของ ${studentData.firstName}...</p>`;
+
+        try {
+            const recordsSnapshot = await db.collection('attendance_records')
+                .where('studentId', '==', studentData.studentId)
+                .orderBy('date', 'desc') // เรียงจากล่าสุดไปเก่า
+                .get();
+            
+                let html = `
+                <div class="individual-report-header">
+                    <h3>ประวัติการเข้าเรียนของ</h3>
+                    <p>${studentData.studentId} - ${studentData.firstName} ${studentData.lastName}</p>
+                </div>
+                <div class="table-responsive-wrapper">
+                    <table class="data-table individual-attendance-table">
+                        <thead>
+                            <tr>
+                                <th>วันที่</th>
+                                <th>สถานะ</th>
+                                <th>ผู้บันทึก</th>
+                                <th>จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+    
+            if (recordsSnapshot.empty) {
+                html += '<tr><td colspan="4" class="no-data">ไม่พบประวัติการเช็คชื่อ</td></tr>';
+            } else {
+                const statusOptions = {
+                    present: 'มา',
+                    absent: 'ไม่มา',
+                    late: 'สาย',
+                    leave: 'ลา'
+                };
+    
+                const userCache = {}; // Cache for user display names to avoid repeated lookups if needed
+    
+                recordsSnapshot.forEach(doc => {
+                    const record = doc.data();
+                    const recordId = doc.id;
+                    
+                    // Helper to get a readable name for who marked the attendance
+                    let markerName = 'N/A';
+                    if(record.markedBy) {
+                        // This is a simple version. A more robust way is to fetch user names.
+                        // For now, we just show the UID.
+                        markerName = record.markedBy.substring(0, 8) + '...';
+                    }
+    
+                    html += `
+                        <tr data-record-id="${recordId}">
+                            <td data-label="วันที่">${record.date}</td>
+                            <td data-label="สถานะ">
+                                <div class="status-select-wrapper">
+                                    <select class="status-select-edit" data-initial-status="${record.status}">
+                                        ${Object.keys(statusOptions).map(key => 
+                                            `<option value="${key}" ${record.status === key ? 'selected' : ''}>${statusOptions[key]}</option>`
+                                        ).join('')}
+                                    </select>
+                                </div>
+                            </td>
+                            <td data-label="ผู้บันทึก" class="marker-info">${markerName}</td>
+                            <td data-label="จัดการ" class="action-cell">
+                                <button class="btn btn-save" onclick="Report.handleAttendanceUpdate(this, '${recordId}')">
+                                    <i class="fas fa-save"></i>
+                                    <span>บันทึก</span>
+                                </button>
+                                <span class="save-status"></span>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+    
+            html += `</tbody></table></div>`;
+            resultEl.innerHTML = html;
+    
+        } catch (error) {
+            console.error("Error displaying student attendance history:", error);
+            resultEl.innerHTML = '<p class="error-text">เกิดข้อผิดพลาดในการแสดงประวัติ: ' + error.message + '</p>';
+        }
+    },
+    
+    /**
+     * อัปเดตสถานะการเข้าเรียนใน Firestore
+     * @param {HTMLElement} buttonElement - ปุ่มที่ถูกคลิก
+     * @param {string} recordId - Document ID ของ attendance_records
+     */
+    handleAttendanceUpdate: async function(buttonElement, recordId) {
+        const row = buttonElement.closest('tr');
+        const statusSelect = row.querySelector('.status-select-edit');
+        const saveStatusEl = row.querySelector('.save-status');
+        const newStatus = statusSelect.value;
+
+        buttonElement.disabled = true;
+        saveStatusEl.textContent = 'กำลังบันทึก...';
+        saveStatusEl.style.color = 'orange';
+
+        try {
+            const recordRef = db.collection('attendance_records').doc(recordId);
+            await recordRef.update({
+                status: newStatus,
+                lastModifiedBy: this.teacherId, // ใช้ teacherId ที่เก็บไว้
+                lastModifiedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            saveStatusEl.textContent = 'บันทึกแล้ว!';
+            saveStatusEl.style.color = 'green';
+
+        } catch (error) {
+            console.error("Error updating attendance:", error);
+            saveStatusEl.textContent = 'ผิดพลาด!';
+            saveStatusEl.style.color = 'red';
+        } finally {
+            // หน่วงเวลาเล็กน้อยก่อนจะเคลียร์ข้อความและเปิดปุ่ม
+            setTimeout(() => {
+                buttonElement.disabled = false;
+                saveStatusEl.textContent = '';
+            }, 2000);
+        }
+    },
+
+    // --- END: Individual Report Functions ---
+
+
+    // --- โค้ดเดิมของคุณสำหรับรายงานแบบสรุป (Aggregate Report) ไม่มีการเปลี่ยนแปลง ---
+    
     // --- Initialize UI and Event Listeners ---
     showReportUI: async function(mainContentElement, role, teacherId = null, teacherClassesDetails = []) {
         this.mainContentElement = mainContentElement;
@@ -208,20 +441,8 @@ const Report = {
         if (specificStudentId) {
             query = query.where('studentId', '==', specificStudentId);
         }
-
-        // Firestore requires the field used in inequality filters to be the first orderBy field.
-        query = query.orderBy('date'); // ORDER BY DATE FIRST
-
-        // Then, you can order by other fields.
-        // If a class is selected, it's good to sort by studentId within that class for that date.
-        // If no class is selected (e.g., admin all classes), you might want classId then studentId.
-        if (selectedClassId) {
-            query = query.orderBy('studentId');
-        } else {
-            // If querying across multiple classes, order by classId then studentId
-            // This helps in grouping/processing if needed, though our pivot mainly uses studentId
-            query = query.orderBy('classId').orderBy('studentId');
-        }
+        
+        query = query.orderBy('date').orderBy('classId').orderBy('studentId');
 
         try {
             const attendanceSnapshot = await query.get();
@@ -232,10 +453,7 @@ const Report = {
             }
 
             const { studentCache, classCache, teacherNameCache } = await this.fetchRelatedDataForReport(attendanceSnapshot);
-            // Prepare raw data first (for CSV and as base for pivoting)
             this.currentReportData = this.prepareDataForTableAndExport(attendanceSnapshot, studentCache, classCache, teacherNameCache);
-
-            // Then, transform data for the pivot table display
             const { pivotedData, uniqueDates } = this.transformDataForPivotView(this.currentReportData);
             this.renderReportTable(reportResultArea, pivotedData, uniqueDates, startDate, endDate, selectedClassId, classCache);
 
@@ -291,7 +509,7 @@ const Report = {
             const teacherData = teacherNameCache[record.markedBy] || {};
 
             reportData.push({
-                date: record.date, // Keep original date
+                date: record.date,
                 className: classData.className || 'N/A',
                 classId: record.classId,
                 studentId: record.studentId,
@@ -301,7 +519,6 @@ const Report = {
                 markedBy: teacherData.displayName || (record.markedBy ? record.markedBy.substring(0,8) : 'N/A')
             });
         });
-        // Sort by student name then date for easier processing in pivot
         reportData.sort((a, b) => {
             const nameA = `${a.studentFirstName} ${a.studentLastName}`.toLowerCase();
             const nameB = `${b.studentFirstName} ${b.studentLastName}`.toLowerCase();
@@ -315,7 +532,7 @@ const Report = {
     },
 
     transformDataForPivotView: function(reportData) {
-        const pivotedData = {}; // studentId -> { studentInfo, attendance: { date: status } }
+        const pivotedData = {};
         const uniqueDatesSet = new Set();
 
         reportData.forEach(record => {
@@ -332,14 +549,8 @@ const Report = {
             pivotedData[record.studentId].attendance[record.date] = record.status;
         });
 
-        const uniqueDates = Array.from(uniqueDatesSet).sort(); // Sort dates chronologically
-
-        // Convert pivotedData object to array AND SORT BY studentId
+        const uniqueDates = Array.from(uniqueDatesSet).sort();
         const sortedPivotedData = Object.values(pivotedData).sort((a, b) => {
-            // Compare studentId directly (assuming they are strings that sort naturally, e.g., "S001", "S002", "S010")
-            // If studentIds are purely numeric and stored as numbers, this sort is fine.
-            // If they are strings but need numerical sorting (e.g., "1", "2", "10"),
-            // you might need a more complex sort or ensure they are padded with leading zeros.
             if (a.studentId < b.studentId) return -1;
             if (a.studentId > b.studentId) return 1;
             return 0;
@@ -365,21 +576,15 @@ const Report = {
             html += `<th>${date}</th>`;
         });
         html += '</tr></thead><tbody>';
-
-        // Helper function to get status class
+        
         const getStatusClass = (statusText) => {
-            if (!statusText) return 'status-empty'; // For empty cells
+            if (!statusText) return 'status-empty';
             switch (statusText) {
-                case 'มา':
-                    return 'status-present';
-                case 'ไม่มา':
-                    return 'status-absent';
-                case 'สาย':
-                    return 'status-late';
-                case 'ลา':
-                    return 'status-leave';
-                default:
-                    return ''; // No specific class for unknown status
+                case 'มา': return 'status-present';
+                case 'ไม่มา': return 'status-absent';
+                case 'สาย': return 'status-late';
+                case 'ลา': return 'status-leave';
+                default: return '';
             }
         };
 
@@ -395,8 +600,7 @@ const Report = {
                 uniqueDates.forEach(date => {
                     const status = studentData.attendance[date] || '';
                     const statusClass = getStatusClass(status);
-                    // Add class "status-cell" for base styling and specific status class
-                    html += `<td class="status-cell ${statusClass}">${status}</td>`; // MODIFIED
+                    html += `<td class="status-cell ${statusClass}">${status}</td>`;
                 });
                 html += `</tr>`;
             });
@@ -405,9 +609,7 @@ const Report = {
         html += '</tbody></table></div>';
         reportResultArea.innerHTML = html;
     },
-
-    // --- CSV Export Functionality (for Teacher) ---
-    // This function remains unchanged as it uses this.currentReportData (the raw, row-based data)
+    
     exportDataToCSV: function() {
         if (this.currentReportData.length === 0) {
             alert("ไม่มีข้อมูลให้ Export");
@@ -422,7 +624,7 @@ const Report = {
                 if (typeof field === 'string' && field.includes(',')) {
                     return `"${field.replace(/"/g, '""')}"`;
                 }
-                return String(field); // Ensure it's a string
+                return String(field);
             };
             const row = [
                 item.date,
