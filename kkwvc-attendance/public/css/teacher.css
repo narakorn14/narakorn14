@@ -26,8 +26,7 @@
     overflow: hidden;
 }
 
-#attendanceStudentList th,
-#attendanceStudentList td {
+#attendanceStudentList th,#attendanceStudentList td {
     padding: 0.75rem;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
@@ -56,4 +55,12 @@
 button#submitAttendanceBtn {
     /* ใช้ class .btn .btn-primary */
     margin-top: 1.5rem;
+}
+@media (max-width: 768px){
+    #attendanceStudentList th,#attendanceStudentList td {
+        padding: 0.4rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+    }
+    h3 {font-size: 18px;}
 }

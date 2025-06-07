@@ -401,17 +401,17 @@ const StudentManager = {
                 return;
             }
             let html = '<table><thead><tr><th>รหัสนักเรียน</th><th>ชื่อ</th><th>นามสกุล</th><th>จัดการ</th></tr></thead><tbody>';
-            querySnapshot.forEach(doc => {
-                const student = doc.data();
-                html += `
-                    <tr>
-                        <td>${student.studentId}</td>
-                        <td>${student.firstName}</td>
-                        <td>${student.lastName}</td>
-                        <td>
-                            <button class="delete-student-btn" data-studentid="${student.studentId}" data-studentname="${student.firstName} ${student.lastName}">ลบ (ออกจากห้อง)</button>
-                        </td>
-                    </tr>`;
+        querySnapshot.forEach(doc => {
+            const student = doc.data();
+            html += `
+                <tr>
+                    <td data-label="รหัสนักเรียน">${student.studentId}</td>
+                    <td data-label="ชื่อ">${student.firstName}</td>
+                    <td data-label="นามสกุล">${student.lastName}</td>
+                    <td data-label="จัดการ">
+                        <button class="delete-student-btn" data-studentid="${student.studentId}" data-studentname="${student.firstName} ${student.lastName}">ลบ (ออกจากห้อง)</button>
+                    </td>
+                </tr>`;
             });
             html += '</tbody></table>';
             listEl.innerHTML = html;

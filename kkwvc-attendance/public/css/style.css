@@ -1,44 +1,54 @@
 /* Styles for stlye section */
 :root {
-    --primary-color: #007bff; /* สีน้ำเงินหลัก (ตัวอย่าง) */
-    --primary-color-darker: #00418a; /* สีเข้มขึ้นของ primary */
-    --primary-color-darkest: #003773;
+    /* ---------- สีหลัก ---------- */
+    --primary-color: #b38dfd;             /* ม่วงอ่อน */
+    --primary-color-darker: #9d7ce0;      /* ม่วงเข้ม */
+    --primary-color-darkest: #7e5ccf;
+    --primary-color-rgb: 179, 141, 253;
+  
     --primary-contrast-color: #ffffff;
-    --primary-darker-color: #0056b3; /* เข้มสุดๆ สำหรับ border */
-    --primary-color-rgb: 0, 123, 255;
-    --secondary-color-darker: #0069d9;
-    --secondary-color-darkest: #0062cc;
-    --error-color-darker: #c82333;
-    --error-color-darkest: #bd2130;
-    --secondary-color: #007bff; /* สีน้ำเงินรอง (ตัวอย่าง) */
-    --accent-color: #ffc107; /* สีเน้น (เช่น สีเหลือง) */
+  
+    /* สีเน้น */
+    --accent-color: #fceab3;
+  
+    /* ---------- สีพื้นหลัง ---------- */
+    --bg-color: linear-gradient(to bottom right, #f8f6fc, #fff7e6);
+    --bg-light-color: #ffffff;
+    --input-bg-color: #ffffff;
+  
+    /* ---------- สีตัวอักษร ---------- */
     --text-color: #333333;
     --text-color-light: #666666;
     --text-placeholder-color: #999999;
-    --bg-color: #f0f2f5;
-    --bg-light-color: #ffffff;   /* สีพื้นหลังของ container (ขาว) */
-    --input-bg-color: #ffffff;   /* สีพื้นหลัง input */
-    --border-color: #ced4da;     /* สีเส้นขอบ input */
-    --border-focus-color: var(--primary-color); /* สีเส้นขอบ input เมื่อ focus */
-    --border-radius-sm: 0.25rem; /* 4px */
-    --border-radius: 0.5rem;   /* 8px */
-    --border-radius-lg: 1rem;    /* 16px */
-    --danger-color: #dc3545;       /* สีสำหรับ error message */
-    --danger-bg-color: #f8d7da;    /* พื้นหลัง error message */
-    --danger-border-color: #f5c6cb; /* เส้นขอบ error message */
-    --success-color: #28a745;
+  
+    /* ---------- สีขอบ ---------- */
+    --border-color: #ced4da;
+    --border-focus-color: var(--primary-color);
+    --danger-border-color: #f5c6cb;
+  
+    /* ---------- สี error ---------- */
     --error-color: #dc3545;
+    --danger-color: #dc3545;
+    --danger-bg-color: #f8d7da;
+  
+    /* ---------- สี success/warning ---------- */
+    --success-color: #28a745;
     --warning-color: #ffc107;
-    --hover-light-bg-color: #f1f3f5;
-    --font-family-main: 'Sarabun', sans-serif; /* หรือฟอนต์ที่คุณเลือก */
-    --font-size-base: 12px;
+  
+    /* ---------- ขนาด & รูปร่าง ---------- */
+    --border-radius-sm: 0.25rem;
+    --border-radius: 0.5rem;
+    --border-radius-lg: 1rem;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --box-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.1);
+  
+    /* ---------- ฟอนต์ ---------- */
+    --font-family-main: 'Prompt', sans-serif;
+    --font-family-sans-serif: 'Prompt', sans-serif;
+    --font-size-base: 16px;
     --line-height-base: 1.6;
-    --border-radius: 8px;
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* เงาทั่วไป */
-    --box-shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.1); /* เงาใหญ่ขึ้น */
-    /* Font stack ที่ทันสมัยขึ้น */
-    --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
+  }
+  
 
 body {
     font-family: var(--font-family-main);
@@ -60,12 +70,9 @@ body.login-page { /* ถ้าหน้า login มี footer และต้�
 
 /* ทำให้ main content ยืดเพื่อดัน footer ลงไป */
 main.container, /* หรือ selector ของ main content area ของคุณ */
-div.login-container { /* ถ้าหน้า login มีโครงสร้างที่ main content คือ login-container */
-    flex-grow: 1; /* หรือ flex: 1; */
-}
 
 h1, h2, h3, h4, h5, h6 {
-    color: var(--primary-color);
+    color: var(--text-color, #333333);
     margin-top: 0;
     margin-bottom: 0.5rem;
     font-weight: 700; /* หรือ 500, 600 ตามความเหมาะสม */
@@ -178,16 +185,6 @@ button { /* สไตล์พื้นฐานของปุ่มทั้�
     border-color: var(--secondary-color);
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* สีฟ้าอ่อนๆ เวลากด focus */
-}
-
-.container { /* ปรับ container หลัก (ถ้ามี) */
-    width: 90%;
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: var(--bg-light-color);
-    box-shadow: var(--box-shadow);
-    border-radius: calc(var(--border-radius) * 2); /* 8px */
 }
 
 .error-message {

@@ -16,7 +16,7 @@ main.container, div.login-container {
 
 /* HEADER */
 .dashboard-header {
-    background: linear-gradient(135deg, var(--primary-color, #007BFF), var(--primary-darker-color, #0056b3));
+    background: linear-gradient(135deg, var(--primary-color, #fde68ac4), var(--primary-darker-color, #fde68ac4));
     color: var(--primary-contrast-color, #ffffff);
     padding: 1rem 1.5rem;
     display: flex;
@@ -29,7 +29,7 @@ main.container, div.login-container {
     font-size: 1.7rem;
     font-weight: 600;
     margin: 0;
-    color: inherit;
+    color: var(--text-color, #333333);
 }
 
 /* USER INFO */
@@ -42,7 +42,7 @@ main.container, div.login-container {
     margin-right: 1rem;
     font-size: 1rem;
     font-weight: 500;
-    color: var(--primary-contrast-color, #f8f9fa);
+    color: var(--text-color, #333333);
 }
 
 .user-info-controls #logoutButton {
@@ -92,9 +92,8 @@ main.container, div.login-container {
 
 /* NAVIGATION BUTTONS (li > button.nav-button) */
 .nav-button {
-    display: block;
     text-decoration: none;
-    color: var(--text-color, #333);
+    color: var(--text-color);
     font-weight: 500;
     padding: 0.65rem 1rem;
     border-radius: var(--border-radius-sm, 6px);
@@ -114,20 +113,19 @@ main.container, div.login-container {
 }
 
 .nav-button.active {
-    background-color: var(--primary-color, #007BFF);
-    color: var(--primary-contrast-color, white);
+    background-color: var(--primary-color);
+    color: var(--primary-contrast-color);
     font-weight: 600;
 }
 .nav-button.active:hover {
-    background-color: var(--primary-darker-color, #0056b3);
+    background-color: var(--primary-color-darkest);
 }
 
 
 /* MAIN CONTAINER */
 .container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 2rem;
+    max-width: 100%;
+    padding: 1rem;
     background: var(--bg-light-color, white);
     border-radius: var(--border-radius-lg, 12px);
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
@@ -147,7 +145,7 @@ main.container, div.login-container {
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 0.95rem;
+    font-size: 16px;
 }
 
 .student-table thead {
@@ -210,6 +208,61 @@ main.container, div.login-container {
 }
 
 /*---------------------------------------------------*/
+/* === สไตล์สำหรับตารางนักเรียน === */
+
+/* กำหนดสไตล์โดยรวมของตาราง */
+#studentsList table {
+    width: 100%; /* ทำให้ตารางกว้างเต็มพื้นที่ของ container */
+    border-collapse: collapse; /* ทำให้เส้นขอบรวมเป็นเส้นเดียว สวยงามกว่า */
+    margin-top: 20px; /* เว้นระยะห่างจากด้านบน */
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* เพิ่มเงาเล็กน้อยให้ดูมีมิติ */
+    background-color: #ffffff;
+}
+
+/* สไตล์สำหรับหัวตาราง (Header) */
+#studentsList th {
+    background-color: #4A5568; /* สีพื้นหลังหัวตาราง (สีเทาเข้ม) */
+    color: #ffffff; /* สีตัวอักษรหัวตาราง (สีขาว) */
+    font-weight: bold;
+    padding: 12px 15px; /* เพิ่มระยะห่างภายในเซลล์ */
+    text-align: left; /* จัดข้อความชิดซ้าย */
+}
+
+/* สไตล์สำหรับเซลล์ข้อมูล (Data cells) */
+#studentsList td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dddddd; /* เพิ่มเส้นคั่นบางๆ ระหว่างแถว */
+    color: #333; /* สีตัวอักษรให้เข้มขึ้นเล็กน้อย */
+}
+
+/* สไตล์สำหรับแถวข้อมูล (ทำให้เป็นลายทาง) */
+#studentsList tbody tr:nth-child(even) {
+    background-color: #f8f8f8; /* สีพื้นหลังสำหรับแถวคู่ */
+}
+
+/* เพิ่มเอฟเฟกต์เมื่อเอาเมาส์ไปชี้ที่แถว */
+#studentsList tbody tr:hover {
+    background-color: #e2e8f0; /* เปลี่ยนสีพื้นหลังเมื่อเมาส์ชี้ */
+    cursor: pointer; /* เปลี่ยนเคอร์เซอร์เป็นรูปมือ */
+}
+
+/* สไตล์สำหรับปุ่มลบ */
+.delete-student-btn {
+    background-color: #e53e3e; /* สีแดงสำหรับปุ่มลบ */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px; /* ทำให้ขอบมน */
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease; /* ทำให้การเปลี่ยนสีสมูท */
+}
+
+.delete-student-btn:hover {
+    background-color: #c53030; /* สีแดงเข้มขึ้นเมื่อเมาส์ชี้ */
+}
+/*****************************************************/
 
 /* FOOTER */
 footer {
@@ -222,6 +275,10 @@ footer {
 }
 
 @media (max-width: 768px) {
+    .student-table {
+        font-size: 12px;
+        font-weight: 400;
+    }
     /* ... (โค้ดเดิมของคุณสำหรับ .dashboard-header, .user-info-controls ฯลฯ) ... */
     h1 { font-size: 2.25rem; } /* 36px */
     h2 { font-size: 24px; } /* 30px */
@@ -231,7 +288,7 @@ footer {
         flex-direction: column;
         align-items: flex-start;
         padding: 1rem;
-        text-align: left;
+        text-align: center;
     }
 
     .dashboard-nav ul { /* สมมติว่านี่คือ nav หลักที่ถูกซ่อน ไม่ใช่ nav-menu */
@@ -272,7 +329,44 @@ footer {
     .user-info-controls #logoutButton:hover {
         background-color: #c82333;
     }
-
+    /************************************************************/
+        /* ซ่อนหัวตารางแบบปกติ */
+        #studentsList table thead {
+            display: none;
+        }
+    
+        /* ทำให้เซลล์แสดงผลเป็นบล็อก (เรียงต่อกันแนวตั้ง) */
+        #studentsList table, 
+        #studentsList tbody, 
+        #studentsList tr, 
+        #studentsList td {
+            display: block;
+        }
+    
+        /* จัดการให้แต่ละแถวดูเหมือนการ์ดข้อมูล */
+        #studentsList tr {
+            margin-bottom: 15px;
+        }
+    
+        #studentsList td {
+            text-align: right; /* จัดข้อมูลชิดขวา */
+            padding-left: 50%; /* ดันข้อมูลไปทางขวา เพื่อเว้นที่ให้หัวข้อ */
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+    
+        /* สร้างหัวข้อใหม่โดยใช้ Pseudo-element ::before */
+        #studentsList td::before {
+            content: attr(data-label); /* ดึงค่าจาก attribute 'data-label' มาแสดง */
+            position: absolute;
+            left: 15px;
+            width: calc(50% - 30px);
+            padding-right: 10px;
+            white-space: nowrap;
+            text-align: left;
+            font-weight: bold;
+            color: #333;
+        }
     /*///////////////////////////////////////////////////*/
     /* ส่วนที่ปรับปรุงสำหรับ .nav-menu และ .nav-button */
     /*///////////////////////////////////////////////////*/

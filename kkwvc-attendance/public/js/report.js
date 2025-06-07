@@ -312,8 +312,9 @@ const Report = {
         const defaultStartDate = sevenDaysAgo.toISOString().slice(0,10);
 
         this.mainContentElement.innerHTML = `
-            <h2>รายงานการเข้าเรียน ${this.userRole === 'teacher' ? '(ของฉัน)' : ''}</h2>
+            
             <div class="report-filters">
+            <h2>รายงานการเข้าเรียน ${this.userRole === 'teacher' ? '(ของฉัน)' : ''}</h2>
                 ${classFilterHTML}
                 <div class="form-group">
                     <label for="reportStartDate">ตั้งแต่วันที่:</label>

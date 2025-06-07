@@ -1,171 +1,175 @@
-/* Styles for login section */
+/* ========== พื้นฐาน (ใช้ได้กับทุกหน้าจอ) ========== */
 body.login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom right, #f8f6fc, #fff7e6);
     min-height: 100vh;
-    background-color: var(--bg-color);
-    font-family: var(--font-family-sans-serif);
-    color: var(--text-color);
-    padding: 1rem; /* เพิ่ม padding ให้ body เผื่อกรณี container ชิดขอบจอเล็ก */
-    box-sizing: border-box;
-}
-
-.login-container {
-    background-color: var(--bg-light-color);
-    padding: 2.5rem; /* เพิ่ม padding ภายใน container */
-    border-radius: var(--border-radius-lg); /* 1rem (16px) ทำให้ดูโค้งมนทันสมัย */
-    box-shadow: var(--box-shadow-lg); /* เงาที่ดูนุ่มนวลและชัดเจนขึ้น */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* วงกลมพื้นหลัง */
+  body.login-page::before,
+  body.login-page::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    z-index: 0;
+  }
+  
+  body.login-page::before {
+    width: 300px;
+    height: 300px;
+    background: #cdb3ff;
+    top: 10%;
+    left: 10%;
+  }
+  
+  body.login-page::after {
+    width: 250px;
+    height: 250px;
+    background: #fceab3;
+    bottom: 10%;
+    right: 15%;
+  }
+  
+  /* กล่อง login */
+  .login-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 90%;             /* ปรับให้เหมาะกับจอเล็ก */
+    max-width: 400px;
+    z-index: 1;
     text-align: center;
-    width: 100%;
-    max-width: 420px; /* ขยาย max-width เล็กน้อย */
     box-sizing: border-box;
-}
-
-.login-container .logo {
-    width: 80px; /* หรือ 100px ถ้าต้องการให้เด่นขึ้น */
-    height: auto;
-    margin-bottom: 1.5rem; /* เพิ่มระยะห่างด้านล่างโลโก้ */
-}
-
-.login-container h2 {
-    color: var(--text-color); /* ใช้สี text ทั่วไป หรือ var(--primary-color) หากต้องการ */
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    font-size: 1.75rem; /* ปรับขนาดให้เด่น */
-    font-weight: 600; /* ทำให้หนาขึ้นเล็กน้อย */
-}
-
-.login-container h3 {
-    margin-top: 0;
-    margin-bottom: 2rem; /* เพิ่มระยะห่างก่อนฟอร์ม */
+  }
+  
+  /* โลโก้ */
+  .login-container .logo {
+    width: 70px;
+    margin-bottom: 1rem;
+  }
+  
+  /* หัวข้อ */
+  .login-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .login-container h3 {
     font-size: 1rem;
-    font-weight: 400; /* ปกติ */
-    color: var(--text-light-color);
-}
-
-.form-group {
+    color: #666;
+  }
+  
+  /* ฟอร์ม */
+  .form-group {
     text-align: left;
-    margin-bottom: 1.25rem; /* ระยะห่างระหว่าง form group */
-}
-
-.form-group label {
+    margin-bottom: 1.2rem;
+  }
+  
+  .form-group label {
     display: block;
-    margin-bottom: 0.5rem; /* ระยะห่างระหว่าง label และ input */
-    font-size: 0.9rem;
-    font-weight: 500; /* ทำให้ label ชัดขึ้นเล็กน้อย */
-    color: var(--text-color);
-}
-
-.form-group input[type="text"],
-.form-group input[type="password"],
-.form-group input[type="email"] { /* ระบุ type input ให้ชัดเจน */
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .form-group input {
     width: 100%;
-    padding: 0.75rem 1rem; /* เพิ่ม padding ใน input */
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius); /* 0.5rem (8px) */
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
     font-size: 1rem;
-    color: var(--text-color);
-    background-color: var(--input-bg-color);
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     box-sizing: border-box;
-}
-
-.form-group input::placeholder {
-    color: var(--text-placeholder-color);
-    opacity: 1; /* Firefox */
-}
-
-.form-group input:focus {
-    border-color: var(--border-focus-color);
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.25); /* Focus ring แบบ Bootstrap */
-}
-
-/* สามารถใช้ class .btn .btn-primary แทนได้ หากกำหนดใน HTML */
-button[type="submit"],
-.btn.btn-primary { /* เพิ่ม .btn.btn-primary เผื่อคุณใช้ class */
-    background-color: var(--primary-color);
-    color: var(--primary-contrast-color);
-    padding: 0.75rem 1.5rem; /* ปรับ padding ให้สมดุล */
-    border: none;
-    border-radius: var(--border-radius); /* 0.5rem (8px) */
-    font-size: 1rem;
-    font-weight: 500; /* น้ำหนักตัวอักษร */
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  }
+  
+  /* ปุ่ม */
+  button[type="submit"] {
     width: 100%;
-    text-transform: uppercase; /* ทำให้ตัวอักษรใหญ่ทั้งหมด ดูเป็นปุ่มมากขึ้น (optional) */
-    letter-spacing: 0.5px; /* เพิ่มระยะห่างตัวอักษรเล็กน้อย (optional) */
-    margin-top: 1rem; /* เพิ่มระยะห่างด้านบนปุ่ม */
-}
-
-button[type="submit"]:hover,
-.btn.btn-primary:hover {
-    background-color: var(--primary-darker-color);
-    transform: translateY(-1px); /* เอฟเฟกต์ลอยขึ้นเล็กน้อยเมื่อ hover */
-}
-
-button[type="submit"]:active,
-.btn.btn-primary:active {
-    transform: translateY(0); /* กลับสู่ตำแหน่งเดิมเมื่อคลิก */
-}
-
-.error-message {
-    color: var(--danger-color);
-    background-color: var(--danger-bg-color);
-    border: 1px solid var(--danger-border-color);
-    padding: 0.75rem 1.25rem;
-    border-radius: var(--border-radius);
-    margin-top: 1.5rem;
+    padding: 0.9rem;
+    background: #b38dfd;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  button[type="submit"]:hover {
+    background: #9d7ce0;
+  }
+  
+  /* ข้อความผิดพลาด */
+  .error-message {
+    color: red;
+    margin-top: 1rem;
     font-size: 0.9rem;
-    text-align: left;
-    
-    /* --- เพิ่ม 2 บรรทัดนี้ --- */
-    display: none; /* ซ่อนเป็นค่าเริ่มต้น */
-}
-
-/* --- เพิ่ม class ใหม่นี้เข้าไป --- */
-.error-message.show {
-    display: block; /* สั่งให้แสดงผลเมื่อมี class .show */
-}
-
-/* Responsive adjustments (สำหรับมือถือ) */
-@media (max-width: 768px) {
+  }
+  
+  /* ========== Media Queries ========== */
+  
+  /* 📱 iPhone & small devices */
+  @media (max-width: 480px) {
     .login-container {
-        padding: 2rem; /* ลด padding บนมือถือ */
-        margin: 1rem auto; /* ให้มีระยะห่างจากขอบบนมือถือบ้าง */
+      padding: 1.5rem;
+      margin: 0 1rem;
     }
-
+  
     .login-container h2 {
-        font-size: 1.5rem; /* ลดขนาดหัวข้อใหญ่ */
+      font-size: 1.3rem;
     }
-
+  
     .login-container h3 {
-        font-size: 0.9rem; /* ลดขนาดหัวข้อรอง */
-        margin-bottom: 1.5rem;
+      font-size: 0.9rem;
     }
-
-    .form-group input[type="text"],
-    .form-group input[type="password"],
-    .form-group input[type="email"] {
-        padding: 0.65rem 0.85rem; /* ปรับ padding input บนมือถือเล็กน้อย */
+  
+    .form-group input {
+      font-size: 0.95rem;
+      padding: 0.7rem;
     }
-
-    button[type="submit"],
-    .btn.btn-primary {
-        padding: 0.65rem 1rem; /* ปรับ padding ปุ่มบนมือถือ */
-        font-size: 0.95rem;
+  
+    button[type="submit"] {
+      font-size: 0.95rem;
+      padding: 0.8rem;
     }
-}
-
-@media (max-width: 480px) {
+  }
+  
+  /* 📱 iPad (แนวตั้ง / แนวนอน) */
+  @media (min-width: 481px) and (max-width: 1024px) {
     .login-container {
-        padding: 1.5rem; /* ลด padding อีกสำหรับจอมือถือที่เล็กมากๆ */
-        border-radius: var(--border-radius); /* ลดความโค้งมนลงเล็กน้อย */
+      padding: 2rem;
     }
-    .login-container .logo {
-        width: 60px;
-        margin-bottom: 1rem;
+  
+    .login-container h2 {
+      font-size: 1.4rem;
     }
-}
+  
+    .login-container h3 {
+      font-size: 1rem;
+    }
+  
+    .form-group input {
+      font-size: 1rem;
+    }
+  
+    button[type="submit"] {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .login-container {
+      padding: 1.5rem;
+    }
+  }
+  
+  
