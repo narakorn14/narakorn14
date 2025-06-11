@@ -263,7 +263,81 @@ main.container, div.login-container {
     background-color: #c53030; /* สีแดงเข้มขึ้นเมื่อเมาส์ชี้ */
 }
 /*****************************************************/
-
+/* Session Warning Modal Styles */
+.session-warning-modal {
+    position: fixed; /* ตำแหน่งอ้างอิงกับ viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6); /* Overlay สีดำโปร่งแสง */
+  
+    /* --- CSS สำหรับจัดกึ่งกลาง --- */
+    display: flex;
+    justify-content: center; /* จัดแนวนอนกึ่งกลาง */
+    align-items: center;    /* จัดแนวตั้งกึ่งกลาง */
+    /* ----------------------------- */
+  
+    z-index: 10000; /* ให้อยู่บนสุดเสมอ */
+    opacity: 0;
+    visibility: hidden;
+    /* Transition สำหรับการ fade in/out */
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+  }
+  
+  .session-warning-modal.show {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s; /* Reset delay when showing */
+  }
+  
+  .session-warning-modal .modal-content {
+    background-color: var(--bg-light-color, white); /* ใช้ CSS variable ถ้ามี */
+    padding: 25px 30px; /* Padding ภายในกล่องข้อความ */
+    border-radius: var(--border-radius, 8px); /* มุมโค้ง */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25); /* เงา */
+    text-align: center; /* ข้อความและปุ่มอยู่กึ่งกลาง */
+    max-width: 420px; /* ความกว้างสูงสุดของกล่อง */
+    width: 90%; /* ความกว้างสำหรับหน้าจอเล็ก */
+    transform: scale(0.95); /* Effect ตอนแสดง (ตัวเลือก) */
+    transition: transform 0.3s ease; /* Animation ตอนแสดง (ตัวเลือก) */
+    /* ไม่จำเป็นต้องมี margin: auto; อีกต่อไปเมื่อใช้ flexbox กับ parent */
+  }
+  
+  .session-warning-modal.show .modal-content {
+    transform: scale(1); /* Effect ตอนแสดง (ตัวเลือก) */
+  }
+  
+  .session-warning-modal h4 {
+    color: var(--primary-color, #0056b3); /* สีหัวข้อ */
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+    display: flex; /* สำหรับจัดไอคอนกับข้อความ */
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .session-warning-modal h4 i { /* ถ้าใช้ FontAwesome icon */
+    margin-right: 10px;
+    font-size: 1.5rem; /* ขนาดไอคอน */
+    color: var(--warning-color, #ffc107); /* สีไอคอน (ควรมี --warning-color ใน :root) */
+  }
+  
+  .session-warning-modal p {
+    margin-bottom: 25px; /* เพิ่มระยะห่างก่อนปุ่ม */
+    font-size: 1rem;
+    color: var(--text-light-color, #555);
+    line-height: 1.6;
+  }
+  
+  .session-warning-modal button {
+    /* สไตล์ปุ่มจะถูกสืบทอดจาก .btn และ .btn-primary/.btn-secondary */
+    /* ถ้ายังไม่ได้ใช้ class .btn ให้เพิ่มสไตล์พื้นฐานที่นี่ */
+    /* padding: 0.6rem 1.2rem; */
+    /* font-size: 0.95rem; */
+    margin: 5px; /* เพิ่มระยะห่างระหว่างปุ่ม */
+  }
 /* FOOTER */
 footer {
     text-align: center;
